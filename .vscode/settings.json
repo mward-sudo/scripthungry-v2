@@ -1,0 +1,12 @@
+{
+  "editor.formatOnSave": true,
+  "eslint.format.enable": true,
+  "editor.formatOnPaste": true,
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "prettier.printWidth": 100,
+  "editor.tabSize": 2,
+  "html.format.wrapLineLength": 100,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
