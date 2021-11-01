@@ -18,7 +18,7 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <link
-            href="https://fonts.googleapis.com/css2?family=Nova+Round&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;800&amp;display=optional"
             rel="stylesheet"
           ></link>
         </Head>
