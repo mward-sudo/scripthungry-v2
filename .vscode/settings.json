@@ -8,5 +8,6 @@
   "html.format.wrapLineLength": 100,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  }
+  },
+  "js-codeformer.useSemicolons": false
 }
