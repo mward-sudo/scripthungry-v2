@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {},
     fontFamily: {
-      display: ['"Nova Round"', 'sans-serif'],
+      display: ['"Montserrat Alternates"', 'sans-serif'],
     },
   },
   variants: {
