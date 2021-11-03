@@ -1,0 +1,27 @@
+# .github/workflow/build.yml
+name: Build
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+
+      # Install dependencies
+      - run: npm ci
+
+      # Build and output webpack stats to artifacts/webpack-stats.json
+      - run: npm run build --if-present
+      - run: ls .next/ -a
+
+      # Send webpack stats and build information to RelativeCI
+      - name: Send webpack stats to RelativeCI
+        uses: relative-ci/agent-action@v1.1.0
+        with:
+          webpackStatsFile: ./.next/stats.json
+          key: ${{ secrets.RELATIVE_CI_KEY }}
