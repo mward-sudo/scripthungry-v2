@@ -17,7 +17,7 @@ const Home: NextPage = () => (
 
     <main className="mb-16">
       <Hero />
-      <p className="flex flex-wrap my-16 text-3xl font-bold text-transparent gap-x-8 gap-y-6 ga">
+      <div className="flex flex-wrap my-16 text-3xl font-bold text-transparent gap-x-8 gap-y-6 ga">
         <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text font-display">
           <Link href="#">
             <a>Showcase. </a>
@@ -38,7 +38,7 @@ const Home: NextPage = () => (
             <a>LinkedIn. </a>
           </Link>
         </div>
-      </p>
+      </div>
     </main>
 
     <footer>&copy; 2021 Michael Ward</footer>
