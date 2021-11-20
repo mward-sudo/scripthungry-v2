@@ -1,6 +1,6 @@
 module.exports = {
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: 'media', // or 'media' or 'class'
   theme: {
     extend: {},
     fontFamily: {
@@ -8,7 +8,10 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      display: ['dark'],
+      zIndex: ['dark'],
+    },
   },
-  plugins: [],
+  plugins: [require('tailwindcss-textshadow')],
 }

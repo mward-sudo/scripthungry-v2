@@ -1,6 +1,6 @@
+import Links from '../components/home/Links'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Link from 'next/link'
 import Layout from '../components/Layout'
 import Hero from './../components/home/Hero'
 
@@ -17,28 +17,7 @@ const Home: NextPage = () => (
 
     <main className="mb-16">
       <Hero />
-      <div className="flex flex-wrap my-16 text-3xl font-bold text-transparent gap-x-8 gap-y-6 ga">
-        <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text font-display">
-          <Link href="#">
-            <a>Showcase. </a>
-          </Link>
-        </div>
-        <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text font-display">
-          <Link href="#">
-            <a>Blog. </a>
-          </Link>
-        </div>
-        <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text font-display">
-          <Link href="#">
-            <a>GitHub. </a>
-          </Link>
-        </div>
-        <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text font-display">
-          <Link href="#">
-            <a>LinkedIn. </a>
-          </Link>
-        </div>
-      </div>
+      <Links />
     </main>
 
     <footer>&copy; 2021 Michael Ward</footer>

@@ -4,7 +4,7 @@ import type { FC } from 'react'
 const Layout: FC = ({ children }) => {
   return (
     <>
-      <header className="border-b-2 border-gray-200 opacity-75">
+      <header className="sticky mb-8 bg-white bg-opacity-75 shadow-sm dark:bg-gray-800 backdrop-blur-lg backdrop-filter">
         <div className="container px-3 py-4 mx-auto">
           <SiteTitle />
         </div>
