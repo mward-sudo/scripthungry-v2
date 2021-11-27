@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { ReactChild } from 'react'
+import type { ReactChild } from 'react'
 
 type PagetitleProps = {
   children: ReactChild
