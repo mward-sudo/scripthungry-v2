@@ -1,7 +1,8 @@
-import '../styles/globals.css'
+import type { AppContext, AppInitialProps, AppProps } from 'next/app'
 import type { NextComponentType } from 'next'
+
+import '../styles/globals.css'
 import Head from 'next/head'
-import { AppContext, AppInitialProps, AppProps } from 'next/app'
 
 const App: NextComponentType<AppContext, AppInitialProps, AppProps> = ({
   Component,

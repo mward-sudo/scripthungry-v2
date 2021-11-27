@@ -13,5 +13,8 @@ module.exports = {
       zIndex: ['dark'],
     },
   },
-  plugins: [require('tailwindcss-textshadow')],
+  plugins: [
+    require('tailwindcss-textshadow'),
+    require('@tailwindcss/typography'),
+  ],
 }

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "isomorphic-dompurify": "^0.16.0",
     "next": "12.0.2",
     "react": "17.0.2",
     "react-cool-dimensions": "^2.0.7",
@@ -17,6 +18,7 @@
     "vanta": "^0.5.21"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.4.1",
     "@types/node": "16.11.6",
     "@types/react": "17.0.33",
     "@types/three": "^0.134.0",
