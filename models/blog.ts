@@ -124,7 +124,7 @@ export const getTotalPostsNumber = async (): Promise<number> => {
   const response = await callGraphCMS(query)
   /** Return total or throw error if response is undefined OR null */
   if (narrowType<iPostsTotal>(response)) {
-    return response.data.postsConnection.aggregate.count
+    return response?.data?.postsConnection?.aggregate?.count
   }
   throw new Error('No response from CMS for getTotalPostsNumber')
 }

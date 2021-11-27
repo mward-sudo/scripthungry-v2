@@ -15,18 +15,10 @@ type indexProps = {
   totalPages: number
 }
 
-const index: FC<indexProps> = ({
-  indexPosts: {
-    data: { posts, postsConnection: connection },
-  },
-  pageNo,
-  totalPages,
-}) => (
-  /** Destructures props.indexPosts.data.posts and props.indexPosts.data.postsConnection,
-   *  aliased as connection */
+const index: FC<indexProps> = ({ indexPosts, pageNo, totalPages }) => (
   <Layout>
     <PageTitle>Blog</PageTitle>
-    {posts.map((post) => (
+    {indexPosts?.data?.posts?.map((post) => (
       <PostExcerpt post={post} key={post.slug} />
     ))}
     <Pagination pageNo={pageNo} totalPages={totalPages} path="/blog/" />
