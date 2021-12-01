@@ -1,12 +1,12 @@
+import type { FC } from 'react'
+import type { iPostExcerpt } from '../../models/blog'
+
 import PostTitle from './PostTitle'
 import PostImage from './PostImage'
-
-import type { FC } from 'react'
-import type { iPost } from '../../models/blog'
 import ByLine from './ByLine'
 
 type PostExcerptProps = {
-  post: iPost
+  post: iPostExcerpt
 }
 const PostExcerpt: FC<PostExcerptProps> = ({
   post: { slug, title, excerpt, author, coverImage },
