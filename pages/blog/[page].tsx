@@ -1,26 +1,36 @@
-import type { FC } from 'react'
-import type { GetStaticPaths, GetStaticProps } from 'next'
-import type { iIndexPostsData } from '../../models/blog'
+import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
+import type { iBlogCategories, iPostExcerpt } from '../../models/blog'
 
-import SiteSettings from '../../lib/settings'
-import { getIndexPosts } from '../../models/blog'
+import { getTotalPostsNumber } from '../../models/blog'
+import { getIndexPosts, getBlogCategories } from '../../models/blog'
 import { calculateTotalIndexPages } from '../../models/blog'
+import { parsePageNumber } from '../../lib/utilities'
+import SiteSettings from '../../lib/settings'
 import index from './index'
 
 type indexProps = {
-  indexPosts: iIndexPostsData
+  indexPosts: iPostExcerpt[]
   pageNo: number
   totalPages: number
+  categories: iBlogCategories
 }
 
 /** Uses index.tsx to render. DRY */
-const indexPagination: FC<indexProps> = ({ indexPosts, pageNo, totalPages }) =>
-  index({ indexPosts, pageNo, totalPages })
+const indexPagination: NextPage<indexProps> = ({
+  indexPosts,
+  pageNo,
+  totalPages,
+  categories,
+}) => index({ indexPosts, pageNo, totalPages, categories })
 
 /** Paths for static site generation */
 export const getStaticPaths: GetStaticPaths = async () => {
+  const totalPosts = await getTotalPostsNumber()
+  const totalPages = await calculateTotalIndexPages(totalPosts)
+  const paths = generatePathsObject(totalPages)
+
   return {
-    paths: generatePathsObject(await calculateTotalIndexPages()),
+    paths,
     fallback: false, // return 404 for invalid pages
   }
 }
@@ -32,14 +42,17 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   // Using optional chaining, defaults to 2 if params or params.page is undefined
   const pageNo = params?.page ? parsePageNumber(params.page) : 2
   const postsPerPage = SiteSettings.POSTS_PER_PAGE
-  const totalPages = await calculateTotalIndexPages()
+  const totalPosts = await getTotalPostsNumber()
+  const totalPages = await calculateTotalIndexPages(totalPosts)
   const indexPosts = await getIndexPosts(pageNo, postsPerPage)
+  const categoriesData = await getBlogCategories()
 
   return {
     props: {
-      indexPosts,
+      indexPosts: indexPosts.data.posts,
       pageNo,
       totalPages,
+      categories: categoriesData.data.blogCategories,
     },
     revalidate: 60,
   }
@@ -59,12 +72,5 @@ const generatePathsObject = (
   }
   return paths
 }
-
-/**
- * Tests if page is a string or an array, and returns the parsedInt of page or page[0].
- * The type for page should be string, but TypeScript definitions require that arrays are catered for
- **/
-const parsePageNumber = (page: string | string[]): number =>
-  parseInt(typeof page === 'string' ? page : page[0])
 
 export default indexPagination
