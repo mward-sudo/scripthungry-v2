@@ -1,10 +1,13 @@
 import Link from 'next/link'
 
 const links = [
-  { link: '#', text: 'Showcase' },
-  { link: '#', text: 'Blog' },
-  { link: '#', text: 'GitHub' },
-  { link: '#', text: 'LinkedIn' },
+  { link: '/showcase', text: 'Showcase' },
+  { link: '/blog', text: 'Blog' },
+  { link: 'https://github.com/mward-sudo/scripthungry-v2', text: 'GitHub' },
+  {
+    link: 'https://www.linkedin.com/in/michael-ward-ba003622/',
+    text: 'LinkedIn',
+  },
 ]
 
 const HomeLink = (text: string, link: string) => (
