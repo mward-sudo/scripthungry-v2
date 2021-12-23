@@ -13,7 +13,7 @@ const Post: FC<PostProps> = ({ post }) => (
     <PostTitle title={post?.title} />
     <PostImage coverImage={post?.coverImage} />
     <div
-      className="prose max-w-none prose-red dark:text-gray-300"
+      className="prose max-w-none prose-red dark:prose-invert"
       id="blog-post"
       dangerouslySetInnerHTML={{
         __html: sanitizer(post?.content?.html),
