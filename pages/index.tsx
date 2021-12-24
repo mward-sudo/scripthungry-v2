@@ -19,8 +19,6 @@ const Home: NextPage = () => (
       <Hero />
       <Links />
     </main>
-
-    <footer>&copy; 2021 Michael Ward</footer>
   </Layout>
 )
 
