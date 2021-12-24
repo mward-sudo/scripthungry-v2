@@ -11,18 +11,23 @@ module.exports = withPreact({
     domains: ['media.graphcms.com'],
   },
   webpack: (config, {}) => {
-    config.plugins.push(
-      new StatsWriterPlugin({
-        filename: 'stats.json',
-        stats: {
-          context: './src', // optional, will improve readability of the paths
-          assets: true,
-          entrypoints: true,
-          chunks: true,
-          modules: true,
-        },
-      })
-    )
+    config.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: ['@svgr/webpack'],
+    }),
+      config.plugins.push(
+        new StatsWriterPlugin({
+          filename: 'stats.json',
+          stats: {
+            context: './src', // optional, will improve readability of the paths
+            assets: true,
+            entrypoints: true,
+            chunks: true,
+            modules: true,
+          },
+        })
+      )
 
     return config
   },
