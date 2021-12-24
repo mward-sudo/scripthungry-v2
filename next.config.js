@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 
 const { StatsWriterPlugin } = require('webpack-stats-plugin')
+const withPreact = require('next-plugin-preact')
 
-module.exports = {
+module.exports = withPreact({
   reactStrictMode: true,
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -25,4 +26,4 @@ module.exports = {
 
     return config
   },
-}
+})

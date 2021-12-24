@@ -10,10 +10,14 @@
   },
   "dependencies": {
     "isomorphic-dompurify": "^0.16.0",
-    "next": "12.0.2",
-    "react": "17.0.2",
+    "next": "^12.0.2",
+    "next-plugin-preact": "^3.0.6",
+    "preact": "^10.6.4",
+    "preact-render-to-string": "^5.1.19",
+    "react": "npm:@preact/compat@^17.0.3",
     "react-cool-dimensions": "^2.0.7",
-    "react-dom": "17.0.2"
+    "react-dom": "npm:@preact/compat@^17.0.3",
+    "react-ssr-prepass": "npm:preact-ssr-prepass@^1.2.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.0",
