@@ -9,10 +9,11 @@ type PostImageProps = {
   coverImage: iPicture | undefined
 }
 
-const PostImage: FC<PostImageProps> = ({ slug, coverImage }) =>
-  coverImage ? (
+const PostImage: FC<PostImageProps> = ({ slug, coverImage }) => {
+  const href = slug ? `/blog/post/${slug}` : undefined
+  return coverImage ? (
     <div className="mt-4">
-      <OptionalLink href={slug}>
+      <OptionalLink href={href}>
         <a>
           <Image
             src={coverImage.url}
@@ -26,5 +27,6 @@ const PostImage: FC<PostImageProps> = ({ slug, coverImage }) =>
   ) : (
     <></>
   )
+}
 
 export default PostImage
