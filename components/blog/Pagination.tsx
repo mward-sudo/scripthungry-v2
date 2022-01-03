@@ -8,51 +8,87 @@ type PaginationProps = {
   path: string
 }
 
-let paginationPathBase: string
 const Pagination: FC<PaginationProps> = ({ pageNo, totalPages, path }) => {
-  paginationPathBase = path
+  const paginationLinks = generatePageLinksArray(pageNo, totalPages, path)
+
   return (
-    <div className="flex justify-between flex-auto w-full mb-12 text-sm md:justify-around md:text-base">
-      <NewerLink pageNo={pageNo} />
-      <p className="p-2 text-gray-500">
-        Page {pageNo} of {totalPages}
-      </p>
-      <OlderLink pageNo={pageNo} totalPages={totalPages} />
+    <div className="btn-group">
+      {paginationLinks.map((paginationLink) =>
+        paginationLink.disabled ? (
+          <button className={`btn btn-disabled`} key={paginationLink.pageNo}>
+            {paginationLink.text}
+          </button>
+        ) : (
+          <button
+            className={`btn ${paginationLink.currentPage ? 'btn-active' : ''}`}
+            key={paginationLink.pageNo}
+          >
+            <Link href={paginationLink.href}>
+              <a>{paginationLink.text}</a>
+            </Link>
+          </button>
+        )
+      )}
     </div>
   )
 }
-type PaginationLinkProps = {
+
+type PaginationLink = {
   pageNo: number
-  totalPages?: number
+  currentPage: boolean
+  href: string
+  text: string
+  disabled: boolean
 }
-const NewerLink: FC<PaginationLinkProps> = ({ pageNo }) =>
-  pageNo > 1 ? (
-    <Link href={newerPageUrl(pageNo)}>
-      <a className="p-4 py-2 text-center text-white bg-blue-600 border-2 border-blue-600 rounded">
-        Newer
-      </a>
-    </Link>
-  ) : (
-    <span className="p-4 py-2 text-center border-2 border-gray-500 rounded">
-      No newer
-    </span>
-  )
-const OlderLink: FC<PaginationLinkProps> = ({ pageNo, totalPages = 1 }) =>
-  pageNo < totalPages ? (
-    <Link href={olderPageUrl(pageNo)}>
-      <a className="p-4 py-2 text-center text-white bg-blue-600 border-2 border-blue-600 rounded">
-        Older
-      </a>
-    </Link>
-  ) : (
-    <span className="p-4 py-2 text-center border-2 border-gray-500 rounded">
-      No older
-    </span>
-  )
 
-const olderPageUrl = (pageNo: any) => `${paginationPathBase}${pageNo + 1}`
+const generatePageLinksArray = (
+  currentPage: number,
+  totalPages: number,
+  path: string
+): PaginationLink[] => {
+  const paginationLinks = []
 
-const newerPageUrl = (pageNo: any) =>
-  pageNo - 1 === 1 ? paginationPathBase : `${paginationPathBase}${pageNo - 1}`
+  paginationLinks.push(prevLink(currentPage, path))
+
+  for (let i = 1; i <= totalPages; i++) {
+    paginationLinks.push({
+      pageNo: i,
+      currentPage: i === currentPage,
+      href: i === 1 ? path : `${path}/${i}`,
+      text: `${i}`,
+      disabled: false,
+    })
+  }
+
+  paginationLinks.push(nextLink(currentPage, totalPages, path))
+
+  return paginationLinks
+}
+
+const prevLink = (currentPage: number, path: string): PaginationLink => {
+  const prevPageNo = currentPage - 1
+  return {
+    pageNo: prevPageNo,
+    currentPage: false,
+    href: prevPageNo === 1 ? path : `${path}/${prevPageNo}`,
+    text: 'Previous',
+    disabled: prevPageNo < 1,
+  }
+}
+
+const nextLink = (
+  currentPage: number,
+  totalPages: number,
+  path: string
+): PaginationLink => {
+  const nextPageNo = currentPage + 1
+  return {
+    pageNo: nextPageNo,
+    currentPage: false,
+    href: `${path}/${nextPageNo}`,
+    text: 'Next',
+    disabled: nextPageNo > totalPages,
+  }
+}
 
 export default Pagination

@@ -11,18 +11,20 @@ const links = [
 ]
 
 const HomeLink = (text: string, link: string) => (
-  <div
-    className="bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text font-display"
-    key={text}
-  >
-    <Link href={link}>
-      <a>{text}.</a>
-    </Link>
+  <div>
+    <div
+      className="bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text font-display"
+      key={text}
+    >
+      <Link href={link}>
+        <a>{text}.</a>
+      </Link>
+    </div>
   </div>
 )
 
 const Links = () => (
-  <div className="flex flex-wrap justify-center my-16 text-3xl font-bold text-transparent gap-x-8 gap-y-6">
+  <div className="flex flex-wrap justify-around p-8 py-[5vh] my-16 -mt-[5vh] text-3xl font-bold text-transparent gap-x-8 gap-y-6 card glass lg:card-side text-neutral-content">
     {links.map(({ link, text }) => HomeLink(text, link))}
   </div>
 )

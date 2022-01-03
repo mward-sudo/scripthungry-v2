@@ -15,14 +15,14 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html className="min-h-full">
+      <Html className="min-h-full" data-theme="bumblebee">
         <Head>
           <link
             href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;800&amp;display=optional"
             rel="stylesheet"
           ></link>
         </Head>
-        <body className="min-h-full text-gray-800 bg-white dark:text-gray-200 dark:bg-black bg-[length:100%_400px] bg-top bg-no-repeat bg-body-light dark:bg-body-dark">
+        <body className="min-h-full text-gray-800 bg-white dark:text-gray-200 dark:bg-stone-900">
           <Main />
           <NextScript />
         </body>
