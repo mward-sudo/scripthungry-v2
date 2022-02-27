@@ -1,6 +1,6 @@
 export type Links = {
-  link: string,
-  text: string,
+  link: string
+  text: string
 }[]
 
 const links: Links = [
