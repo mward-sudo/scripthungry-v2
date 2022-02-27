@@ -13,10 +13,10 @@ jobs:
           node-version: '16.x'
 
       # Install dependencies
-      - run: npm ci
+      - run: pnpm ci
 
       # Build and output webpack stats to artifacts/webpack-stats.json
-      - run: npm run build --if-present
+      - run: pnpm run build --if-present
         env:
           GRAPHCMS_TOKEN: ${{ secrets.GRAPHCMS_TOKEN }}
           GRAPHCMS_ENDPOINT: ${{ secrets.GRAPHCMS_ENDPOINT }}
