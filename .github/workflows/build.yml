@@ -16,7 +16,7 @@ jobs:
           version: 6.32.1
 
       # Install dependencies
-      - run: pnpm ci
+      - run: pnpm i
 
       # Build and output webpack stats to artifacts/webpack-stats.json
       - run: pnpm run build --if-present
