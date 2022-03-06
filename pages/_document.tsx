@@ -15,7 +15,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html className="min-h-full" data-theme="bumblebee">
+      <Html className="min-h-full">
         <Head>
           <link
             href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;800&amp;display=optional"
