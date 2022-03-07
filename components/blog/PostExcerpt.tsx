@@ -1,14 +1,15 @@
-import type { FC } from 'react'
+import type { ReactElement } from 'react'
 import type { iPostExcerpt } from '../../models/blog'
 
 import PostTitle from './PostTitle'
 import PostImage from './PostImage'
 import ByLine from './ByLine'
 
-type PostExcerptProps = {
-  post: iPostExcerpt
+interface PostExcerpt {
+  (props: { post: iPostExcerpt }): ReactElement<any, any>
 }
-const PostExcerpt: FC<PostExcerptProps> = ({
+
+const PostExcerpt: PostExcerpt = ({
   post: { slug, title, excerpt, author, coverImage },
 }) => (
   <article className="my-16">

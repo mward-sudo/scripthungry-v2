@@ -1,16 +1,15 @@
-import type { FC } from 'react'
+import type { ReactElement } from 'react'
 import type { iPicture } from '../../models/blog'
 
 import Image from 'next/image'
 
-type AvatarProps = {
-  avatar: iPicture
-  size?: number
+interface Avatar {
+  (props: { avatar: iPicture; size?: number }): ReactElement<any, any>
 }
 
-const Avatar: FC<AvatarProps> = ({ avatar, size = 40 }) => (
+const Avatar: Avatar = ({ avatar, size = 40 }) => (
   <div
-    className="box-content overflow-hidden border-4 border-gray-100 rounded-full shadow-md"
+    className="box-content overflow-hidden rounded-full border-4 border-gray-100 shadow-md"
     style={{ height: size, width: size }}
   >
     <Image src={avatar.url} height={size} width={size} alt="" layout="fixed" />

@@ -1,6 +1,10 @@
-import type { FC } from 'react'
+import type { ReactElement } from 'react'
 
-const Hero: FC = () => (
+interface Hero {
+  (): ReactElement<any, any>
+}
+
+const Hero: Hero = () => (
   <section className="py-[12.5vh] full-width-escape bg-primary text-neutral">
     <div className="container px-4 mx-auto">
       <h1 className="pb-4 mt-16 mb-2 text-4xl font-bold sm:mb-4 sm:text-5xl lg:text-7xl font-display">

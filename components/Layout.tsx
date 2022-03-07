@@ -1,11 +1,16 @@
-import type { FC } from 'react'
+import type { ReactNode, ReactElement } from 'react'
+
 import siteLinks from '../models/siteLinks'
 
 import NavBar from './nav/NavBar'
 import MobileDrawer from './nav//MobileDrawer'
 import Footer from './Footer'
 
-const Layout: FC = ({ children }) => {
+interface Layout {
+  (props: { children: ReactNode }): ReactElement<any, any>
+}
+
+const Layout: Layout = ({ children }) => {
   return (
     <div className="w-full h-screen drawer">
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />

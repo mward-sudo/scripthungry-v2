@@ -1,7 +1,12 @@
-import type { FC } from 'react'
+import type { ReactElement } from 'react'
+
 import Link from 'next/link'
 
-const SiteTitle: FC = () => (
+interface SiteTitle {
+  (): ReactElement<any, any>
+}
+
+const SiteTitle: SiteTitle = () => (
   <h1 className="text-2xl font-display">
     <Link href="/">
       <a>scriptHungry</a>
