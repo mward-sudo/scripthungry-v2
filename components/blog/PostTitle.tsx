@@ -1,12 +1,11 @@
-import type { FC } from 'react'
+import type { ReactElement } from 'react'
 
 import OptionalLink from '../OptionalLink'
 
-type PostTitleProps = {
-  slug?: string | undefined
-  title: string
+interface PostTitle {
+  (props: { slug?: string | undefined; title: string }): ReactElement<any, any>
 }
-const PostTitle: FC<PostTitleProps> = ({ slug, title }) => {
+const PostTitle: PostTitle = ({ slug, title }) => {
   let href: string | undefined
   if (slug) href = `/blog/post/${slug}`
   return (

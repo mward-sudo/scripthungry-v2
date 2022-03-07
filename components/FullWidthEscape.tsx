@@ -1,6 +1,10 @@
-import type { FC } from 'react'
+import type { ReactElement, ReactNode } from 'react'
 
-const FullWidthEscape: FC = ({ children }) => (
+interface FullWidthEscape {
+  (props: { children: ReactNode }): ReactElement<any, any>
+}
+
+const FullWidthEscape: FullWidthEscape = ({ children }) => (
   <div className="left-[50%] mx-[-50%] max-w-[100vw] relative right-[50%] w-[100vw]">
     {children}
   </div>

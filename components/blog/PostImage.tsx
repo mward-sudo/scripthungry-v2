@@ -1,15 +1,17 @@
-import type { FC } from 'react'
+import type { ReactElement } from 'react'
 import type { iPicture } from '../../models/blog'
 
 import Image from 'next/image'
 import OptionalLink from '../OptionalLink'
 
-type PostImageProps = {
-  slug?: string | undefined
-  coverImage: iPicture | undefined
+interface PostImage {
+  (props: {
+    slug?: string | undefined
+    coverImage: iPicture | undefined
+  }): ReactElement<any, any>
 }
 
-const PostImage: FC<PostImageProps> = ({ slug, coverImage }) => {
+const PostImage: PostImage = ({ slug, coverImage }) => {
   const href = slug ? `/blog/post/${slug}` : undefined
   return coverImage ? (
     <div className="mt-4">

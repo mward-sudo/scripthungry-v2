@@ -1,4 +1,4 @@
-import type { FC } from 'react'
+import type { ReactElement } from 'react'
 import type { GetStaticProps } from 'next'
 import type { iBlogCategories, iPostExcerpt } from '../../models/blog'
 
@@ -16,17 +16,19 @@ import {
 import CategoryCloud from '../../components/blog/CategoryCloud'
 import Intro from '../../components/blog/SanitizedHtml'
 
-type indexProps = {
-  title?: string
-  indexPosts: iPostExcerpt[]
-  pageNo: number
-  totalPages: number
-  categories: iBlogCategories
-  intro?: string
-  paginationPathBase?: string
+interface index {
+  (props: {
+    title?: string
+    indexPosts: iPostExcerpt[]
+    pageNo: number
+    totalPages: number
+    categories: iBlogCategories
+    intro?: string
+    paginationPathBase?: string
+  }): ReactElement<any, any>
 }
 
-const index: FC<indexProps> = ({
+const index: index = ({
   title = 'Blog',
   indexPosts,
   pageNo,
@@ -37,7 +39,7 @@ const index: FC<indexProps> = ({
 }) => (
   <Layout>
     <PageTitle>{title}</PageTitle>
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-x-4">
+    <div className="grid grid-cols-1 gap-x-4 md:grid-cols-4">
       <div className="col-span-1 md:col-span-3">
         {intro && <Intro html={intro} />}
         {indexPosts?.map((post) => (
@@ -75,11 +77,11 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 }
 
-type CategoriesProps = {
-  categories: iBlogCategories
+interface Categories {
+  (props: { categories: iBlogCategories }): ReactElement<any, any>
 }
 
-const Categories: FC<CategoriesProps> = ({ categories }) => (
+const Categories: Categories = ({ categories }) => (
   <div className="hidden text-center md:block md:col-span-1">
     <h2 className="text-xl font-bold">Categories</h2>
     <CategoryCloud categories={categories} />

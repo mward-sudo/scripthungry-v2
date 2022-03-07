@@ -1,14 +1,14 @@
-import type { FC } from 'react'
+import type { ReactElement } from 'react'
 
 import { sanitize as sanitizer } from 'isomorphic-dompurify'
 
-type SanitizedHtmlProps = {
-  html: string
+interface SanitizedHtml {
+  (props: { html: string }): ReactElement<any, any>
 }
 
-const SanitizedHtml: FC<SanitizedHtmlProps> = ({ html }) => (
+const SanitizedHtml: SanitizedHtml = ({ html }) => (
   <div
-    className="prose max-w-none"
+    className="max-w-none prose"
     dangerouslySetInnerHTML={{ __html: sanitizer(html) }}
   ></div>
 )

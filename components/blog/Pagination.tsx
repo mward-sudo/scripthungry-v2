@@ -1,14 +1,15 @@
-import type { FC } from 'react'
+import type { ReactElement } from 'react'
 
 import Link from 'next/link'
 
-type PaginationProps = {
-  pageNo: number
-  totalPages: number
-  path: string
+interface Pagination {
+  (props: { pageNo: number; totalPages: number; path: string }): ReactElement<
+    any,
+    any
+  >
 }
 
-const Pagination: FC<PaginationProps> = ({ pageNo, totalPages, path }) => {
+const Pagination: Pagination = ({ pageNo, totalPages, path }) => {
   const paginationLinks = generatePageLinksArray(pageNo, totalPages, path)
 
   return (

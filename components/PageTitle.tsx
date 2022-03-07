@@ -1,11 +1,10 @@
-import type { FC } from 'react'
-import type { ReactChild } from 'react'
+import type { ReactNode, ReactElement } from 'react'
 
-type PagetitleProps = {
-  children: ReactChild
+interface PageTitle {
+  (props: { children: ReactNode }): ReactElement<any, any>
 }
 
-const PageTitle: FC = ({ children }) => (
+const PageTitle: PageTitle = ({ children }) => (
   <h1 className="text-5xl font-bold font-display">{children}</h1>
 )
 

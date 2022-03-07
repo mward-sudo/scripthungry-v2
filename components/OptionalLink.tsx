@@ -1,12 +1,15 @@
-import type { FC } from 'react'
+import type { ReactElement, ReactNode } from 'react'
 
 import Link from 'next/link'
 
-type OptionalLinkProps = {
-  href?: string | undefined
+interface OptionalLink {
+  (props: { href?: string | undefined; children: ReactNode }): ReactElement<
+    any,
+    any
+  >
 }
 
-const OptionalLink: FC<OptionalLinkProps> = ({ href, children }) =>
+const OptionalLink: OptionalLink = ({ href, children }) =>
   href ? (
     <Link href={href}>
       <a>{children}</a>

@@ -1,5 +1,5 @@
+import type { ReactElement } from 'react'
 import type { GetStaticPaths, GetStaticProps } from 'next'
-import type { FC } from 'react'
 import type { iPostData, iPost, iPostSlugs } from '../../../models/blog'
 
 import Head from 'next/head'
@@ -8,11 +8,11 @@ import { getAllPostSlugs } from '../../../models/blog'
 import { getPostBySlug } from '../../../models/blog'
 import Post from '../../../components/blog/Post'
 
-type PostPageProps = {
-  post: iPost
+interface PostPage {
+  (props: { post: iPost }): ReactElement<any, any>
 }
 
-const PostPage: FC<PostPageProps> = ({ post }) => (
+const PostPage: PostPage = ({ post }) => (
   <Layout>
     <Head>
       <title></title>
