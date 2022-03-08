@@ -21,6 +21,7 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;800&amp;display=optional"
             rel="stylesheet"
           ></link>
+          <meta name="theme-color" content="#641AE6"></meta>
         </Head>
         <body className="min-h-full text-gray-800 bg-white dark:text-gray-200 dark:bg-stone-900">
           <Main />

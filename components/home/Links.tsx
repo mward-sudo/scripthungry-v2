@@ -15,7 +15,7 @@ const HomeLink = (text: string, link: string) => (
 )
 
 const Links = () => (
-  <div className="flex flex-wrap justify-around p-8 py-[5vh] my-16 -mt-[5vh] text-3xl font-bold text-transparent gap-x-8 gap-y-6 card glass lg:card-side text-neutral-content">
+  <div className="flex flex-wrap justify-around p-8 py-[5vh] text-3xl font-bold text-transparent gap-x-8 gap-y-6 card glass lg:card-side text-neutral-content">
     {SiteLinks.map(({ link, text }) => HomeLink(text, link))}
   </div>
 )
