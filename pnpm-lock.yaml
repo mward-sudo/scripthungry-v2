@@ -15,6 +15,7 @@ specifiers:
   eslint-plugin-prettier: ^4.0.0
   eslint-plugin-unused-imports: ^2.0.0
   isomorphic-dompurify: ^0.18.0
+  lottie-react: ^2.2.1
   next: ^12.1.0
   next-plugin-preact: ^3.0.6
   postcss: ^8.4.8
@@ -34,6 +35,7 @@ specifiers:
 
 dependencies:
   isomorphic-dompurify: 0.18.0
+  lottie-react: 2.2.1_9bfab5d69556db861da30525f2351767
   next: 12.1.0_9bfab5d69556db861da30525f2351767
   next-plugin-preact: 3.0.6_df0f407cad31ecd2813768776cfa2f89
   preact: 10.6.6
@@ -3704,6 +3706,21 @@ packages:
     dependencies:
       js-tokens: 4.0.0
     dev: true
+
+  /lottie-react/2.2.1_9bfab5d69556db861da30525f2351767:
+    resolution: {integrity: sha512-lAdIUw+zeHLX3gtyLkisa4QM9NkTUUeZTsEL53laBEsjIH4JibgwkioZuza8CtwZ7/cpPZRbCRXWKfiuaDZWww==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0
+      react-dom: ^16.8.0 || ^17.0.0
+    dependencies:
+      lottie-web: 5.9.1
+      react: /@preact/compat/17.0.3_preact@10.6.6
+      react-dom: /@preact/compat/17.0.3_preact@10.6.6
+    dev: false
+
+  /lottie-web/5.9.1:
+    resolution: {integrity: sha512-3uKtU6BhIK6ZRCE/QyiXq/KuRvPeEAz/VFwqd99jPbpgFY9gHLw2krqvcuCFGepeW94BipS/B3TqIfTc9pUeZg==}
+    dev: false
 
   /lru-cache/6.0.0:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}

@@ -12,7 +12,7 @@ interface Layout {
 
 const Layout: Layout = ({ children }) => {
   return (
-    <div className="w-full h-screen drawer">
+    <div className="w-full drawer">
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
       <div className="flex flex-col drawer-content">
         <NavBar links={siteLinks} />

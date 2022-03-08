@@ -1,4 +1,3 @@
-import Links from '../components/home/Links'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Layout from '../components/Layout'
@@ -15,9 +14,8 @@ const Home: NextPage = () => (
       <link rel="icon" href="/favicon.ico" />
     </Head>
 
-    <main className="mb-16">
+    <main>
       <Hero />
-      <Links />
     </main>
   </Layout>
 )
