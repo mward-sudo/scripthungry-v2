@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "highlight.js": "^11.5.0",
     "isomorphic-dompurify": "^0.18.0",
     "lottie-react": "^2.2.1",
     "next": "^12.1.0",

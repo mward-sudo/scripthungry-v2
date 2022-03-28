@@ -14,6 +14,7 @@ specifiers:
   eslint-config-prettier: ^8.5.0
   eslint-plugin-prettier: ^4.0.0
   eslint-plugin-unused-imports: ^2.0.0
+  highlight.js: ^11.5.0
   isomorphic-dompurify: ^0.18.0
   lottie-react: ^2.2.1
   next: ^12.1.0
@@ -34,6 +35,7 @@ specifiers:
   webpack-stats-plugin: ^1.0.3
 
 dependencies:
+  highlight.js: 11.5.0
   isomorphic-dompurify: 0.18.0
   lottie-react: 2.2.1_9bfab5d69556db861da30525f2351767
   next: 12.1.0_9bfab5d69556db861da30525f2351767
@@ -3301,6 +3303,11 @@ packages:
     dependencies:
       function-bind: 1.1.1
     dev: true
+
+  /highlight.js/11.5.0:
+    resolution: {integrity: sha512-SM6WDj5/C+VfIY8pZ6yW6Xa0Fm1tniYVYWYW1Q/DcMnISZFrC3aQAZZZFAAZtybKNrGId3p/DNbFTtcTXXgYBw==}
+    engines: {node: '>=12.0.0'}
+    dev: false
 
   /html-encoding-sniffer/3.0.0:
     resolution: {integrity: sha512-oWv4T4yJ52iKrufjnyZPkrN0CH3QnrUqdB6In1g5Fe1mia8GmF36gnfNySxoZtxD5+NmYw1EElVXiBk93UeskA==}
