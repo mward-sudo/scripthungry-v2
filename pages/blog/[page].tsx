@@ -26,7 +26,7 @@ const indexPagination: NextPage<indexProps> = ({
 /** Paths for static site generation */
 export const getStaticPaths: GetStaticPaths = async () => {
   const totalPosts = await getTotalPostsNumber()
-  const totalPages = await calculateTotalIndexPages(totalPosts)
+  const totalPages = calculateTotalIndexPages(totalPosts)
   const paths = generatePathsObject(totalPages)
 
   return {
@@ -43,7 +43,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const pageNo = params?.page ? parsePageNumber(params.page) : 2
   const postsPerPage = SiteSettings.POSTS_PER_PAGE
   const totalPosts = await getTotalPostsNumber()
-  const totalPages = await calculateTotalIndexPages(totalPosts)
+  const totalPages = calculateTotalIndexPages(totalPosts)
   const indexPosts = await getIndexPosts(pageNo, postsPerPage)
   const categoriesData = await getBlogCategories()
 

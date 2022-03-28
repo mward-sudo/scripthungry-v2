@@ -63,7 +63,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const postsPerPage = SiteSettings.POSTS_PER_PAGE
   const indexPosts = await getIndexPosts(1, postsPerPage)
   const totalPosts = await getTotalPostsNumber()
-  const totalPages = await calculateTotalIndexPages(totalPosts)
+  const totalPages = calculateTotalIndexPages(totalPosts)
   const categoriesData = await getBlogCategories()
 
   return {
