@@ -22,11 +22,11 @@ export const Stats: Stats = ({ user }) => {
     <div className="p-4 my-8 mx-8 bg-orange-800 full-width-escape prose-invert">
       <div className="container p-4 mx-auto text-white bg-white bg-opacity-10 rounded-xl border-2 border-orange-600 dark:bg-black dark:bg-opacity-20">
         <div className="flex flex-col flex-1 gap-8 items-center md:items-start md:flex-row">
-          <div>
+          <div className="w-[200px]">
             <Avatar avatar={user.avatarUrl} />
             <Location location={user.location} />
           </div>
-          <div className="text-center">
+          <div className="w-full text-center">
             <Username username={user.login} name={user.name} />
             <Bio bio={user.bio} />
             <Company company={user.company} />
