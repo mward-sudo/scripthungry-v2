@@ -1,7 +1,10 @@
-import type { GithubUser } from './github-types'
+import {
+  GithubApiResponse,
+  isGithubApiErrorResponse,
+  isGithubResponse,
+} from './github-types'
 
 import { Octokit } from 'octokit'
-import { isGithubUser } from './github-types'
 
 /**
  * Create a new instance of Octokit.
@@ -14,9 +17,10 @@ const octokit = new Octokit({
 /**
  * Function to get a github user using a graphql query.
  */
-export const getUser = async (username: string): Promise<GithubUser> => {
-  const { user } = await octokit.graphql(
-    `query {
+export const getUser = async (username: string): Promise<GithubApiResponse> => {
+  try {
+    const response = await octokit.graphql(
+      `query {
       user(login: "${username}") {
         login
         name
@@ -65,11 +69,16 @@ export const getUser = async (username: string): Promise<GithubUser> => {
         }
       }
     }`
-  )
+    )
 
-  if (!isGithubUser(user)) {
-    throw new Error('Invalid user')
+    if (isGithubResponse(response)) {
+      return response
+    }
+  } catch (error) {
+    if (isGithubApiErrorResponse(error)) {
+      return error.response
+    }
   }
 
-  return user
+  throw new Error('Unknown error')
 }

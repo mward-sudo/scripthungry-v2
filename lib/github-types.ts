@@ -1,3 +1,8 @@
+export type GithubApiResponse = {
+  user?: GithubUser
+  errors?: GithubApiErrors
+}
+
 export type GithubUser = {
   login: string
   name: string | null
@@ -39,7 +44,7 @@ export type GithubRepositories = {
   totalCount: number
   nodes: GithubRepository[]
 }
-type GithubRepository = {
+export type GithubRepository = {
   name: string
   description: string | null
   url: string
@@ -47,17 +52,44 @@ type GithubRepository = {
   watchers: GithubWatchers
   forks: GithubForks
 }
-type GithubStarGazers = {
+export type GithubStarGazers = {
   totalCount: number
 }
-type GithubWatchers = {
+export type GithubWatchers = {
   totalCount: number
 }
-type GithubForks = {
+export type GithubForks = {
   totalCount: number
 }
 
-// Type predicate function for getUser return value, must match shape of graphql query
+export type GithubErrorResponse = {
+  response: {
+    errors: GithubApiErrors
+  }
+}
+export type GithubApiErrors = {
+  errors: GithubApiError[]
+}
+export type GithubApiError = {
+  type: string
+  path: string[]
+  locations: GithubApiErrorLocation[]
+  message: string
+}
+export type GithubApiErrorLocation = {
+  column: number
+  line: number
+}
+
+export const isGithubResponse = (
+  response: any
+): response is GithubApiResponse => {
+  return (
+    (response.hasOwnProperty('user') && isGithubUser(response.user)) ||
+    (response.hasOwnProperty('errors') && isGithubApiErrors(response))
+  )
+}
+
 export const isGithubUser = (user: any): user is GithubUser => {
   if (typeof user !== 'object' || user === null) {
     return false
@@ -214,4 +246,48 @@ const isGithubForks = (forks: any): forks is GithubForks => {
   }
 
   return typeof forks.totalCount === 'number'
+}
+
+export const isGithubApiErrorResponse = (
+  response: any
+): response is GithubErrorResponse => {
+  return response.hasOwnProperty('errors') && isGithubApiErrors(response)
+}
+
+export const isGithubApiErrors = (errors: any): errors is GithubApiErrors => {
+  if (typeof errors !== 'object' || errors === null) {
+    return false
+  }
+
+  return (
+    Array.isArray(errors.errors) &&
+    errors.errors.every((error: any) => isGithubApiError(error))
+  )
+}
+
+const isGithubApiError = (error: any): error is GithubApiError => {
+  if (typeof error !== 'object' || error === null) {
+    return false
+  }
+
+  return (
+    typeof error.message === 'string' &&
+    typeof error.type === 'string' &&
+    Array.isArray(error.path) &&
+    error.path.every((path: any) => typeof path === 'string') &&
+    Array.isArray(error.locations) &&
+    error.locations.every((location: any) => isGithubApiErrorLocation(location))
+  )
+}
+
+const isGithubApiErrorLocation = (
+  location: any
+): location is GithubApiErrorLocation => {
+  if (typeof location !== 'object' || location === null) {
+    return false
+  }
+
+  return (
+    typeof location.line === 'number' && typeof location.column === 'number'
+  )
 }
