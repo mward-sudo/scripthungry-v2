@@ -27,6 +27,7 @@ specifiers:
   react: npm:@preact/compat@^17.0.3
   react-cool-dimensions: ^2.0.7
   react-dom: npm:@preact/compat@^17.0.3
+  react-icons: ^4.3.1
   react-ssr-prepass: npm:preact-ssr-prepass@^1.2.0
   tailwindcss: ^3.0.23
   tailwindcss-border-styles: ^1.0.1
@@ -47,6 +48,7 @@ dependencies:
   react: /@preact/compat/17.0.3_preact@10.6.6
   react-cool-dimensions: 2.0.7_@preact+compat@17.0.3
   react-dom: /@preact/compat/17.0.3_preact@10.6.6
+  react-icons: 4.3.1_@preact+compat@17.0.3
   react-ssr-prepass: /preact-ssr-prepass/1.2.0_preact@10.6.6
 
 devDependencies:
@@ -4666,6 +4668,14 @@ packages:
     resolution: {integrity: sha512-z1VwkAAJ5d8QybDRuYIXTE41RxGr5GYsv1bQhbOBE8cMfoZQZpcF0odL64vdgrQVzat2jayedj1GoYi80FWcbA==}
     peerDependencies:
       react: '>= 16.8.0'
+    dependencies:
+      react: /@preact/compat/17.0.3_preact@10.6.6
+    dev: false
+
+  /react-icons/4.3.1_@preact+compat@17.0.3:
+    resolution: {integrity: sha512-cB10MXLTs3gVuXimblAdI71jrJx8njrJZmNMEMC+sQu5B/BIOmlsAjskdqpn81y8UBVEGuHODd7/ci5DvoSzTQ==}
+    peerDependencies:
+      react: '*'
     dependencies:
       react: /@preact/compat/17.0.3_preact@10.6.6
     dev: false
