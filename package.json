@@ -14,11 +14,13 @@
     "lottie-react": "^2.2.1",
     "next": "^12.1.0",
     "next-plugin-preact": "^3.0.6",
+    "octokit": "^1.7.1",
     "preact": "^10.6.6",
     "preact-render-to-string": "^5.1.20",
     "react": "npm:@preact/compat@^17.0.3",
     "react-cool-dimensions": "^2.0.7",
     "react-dom": "npm:@preact/compat@^17.0.3",
+    "react-icons": "^4.3.1",
     "react-ssr-prepass": "npm:preact-ssr-prepass@^1.2.0"
   },
   "devDependencies": {
