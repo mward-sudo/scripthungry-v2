@@ -33,7 +33,7 @@ const client = ({
     link: isServer
       ? authLink.concat(httpLink({ endpoint: serverEndpoint }))
       : httpLink({ endpoint: clientEndpoint }),
-    ssrMode: true,
+    ssrMode: typeof window === 'undefined',
     cache: new InMemoryCache(),
   })
 }

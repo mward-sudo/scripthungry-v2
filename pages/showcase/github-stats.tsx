@@ -1,3 +1,5 @@
+import { Error } from './../../components/showcase/github-stats/error'
+import { LoadNewUser } from './../../components/showcase/github-stats/load-new-user'
 import type { GetStaticProps, NextPage } from 'next'
 import type { ApolloQueryResult } from '@apollo/client'
 
@@ -12,12 +14,33 @@ import PageTitle from '../../components/PageTitle'
 // Tracks the first render of the page
 let firstRender = true
 
+const userLoadingState: GitHubUserQuery['user'] = {
+  login: 'Loading...',
+  name: '',
+  bio: '',
+  avatarUrl: '/img/avatar.png',
+  url: '',
+  contributionsCollection: {
+    totalCommitContributions: 0,
+    totalIssueContributions: 0,
+    totalPullRequestContributions: 0,
+    contributionCalendar: {
+      totalContributions: 0,
+      weeks: [],
+    },
+    contributionYears: [],
+  },
+  followers: { totalCount: 0 },
+  following: { totalCount: 0 },
+  repositories: { totalCount: 0 },
+}
+
 type Props = {
   response: ApolloQueryResult<GitHubUserQuery>
 }
 const GitHubStatsPage: NextPage<Props> = ({ response }) => {
   // Hook to get the user's GitHub profile data when requested through getUser
-  let [getUser, { error, data }] = useGitHubUserLazyQuery({
+  let [getUser, { error, data, loading }] = useGitHubUserLazyQuery({
     variables: { username: 'mward-sudo' },
     client: gitHubClient,
   })
@@ -39,27 +62,11 @@ const GitHubStatsPage: NextPage<Props> = ({ response }) => {
   return (
     <Layout>
       <PageTitle>GitHub User Stats</PageTitle>
-      {data?.user && <Stats user={data?.user} />}
-      {error && (
-        <div className="p-8 px-4 my-8 text-3xl font-bold text-center text-red-800 bg-red-100">
-          Error: {error.message}
-        </div>
+      {(data || loading) && !error && (
+        <Stats user={data?.user || userLoadingState} />
       )}
-      <div className="my-8 text-2xl text-center">
-        <input
-          className="p-2 mr-4 text-gray-800 rounded border-2 border-black"
-          id="username"
-          type="text"
-          placeholder={data?.user?.login}
-        />
-        <button
-          className="p-2 px-4 rounded-lg cursor-pointer bg-primary"
-          onClick={reloadData}
-          id="load-button"
-        >
-          Load GitHub user stats
-        </button>
-      </div>
+      {error && <Error error={error.message} />}
+      <LoadNewUser login={data?.user?.login} reloadData={reloadData} />
     </Layout>
   )
 }
