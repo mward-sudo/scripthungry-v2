@@ -1,15 +1,9 @@
-import type { ReactElement } from 'react'
-
 import Image from 'next/image'
 
-type Avatar = {
-  (props: { avatar: string | null }): ReactElement<any, any> | null
-}
-
-export const Avatar: Avatar = ({ avatar }) =>
-  avatar ? (
+export const Avatar = ({ avatar: avatarImageUrl }: { avatar?: string }) =>
+  avatarImageUrl ? (
     <Image
-      src={avatar}
+      src={avatarImageUrl}
       alt=""
       width={200}
       height={200}
