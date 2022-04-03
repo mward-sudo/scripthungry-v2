@@ -11,6 +11,7 @@ import { PRCount } from './pr-count'
 import { RepositoriesCount } from './repositories-count'
 import { Username } from './username'
 import type { GitHubUserQuery } from '../../../generated/github'
+import { StarsCount } from './stars-count'
 
 export const Stats = ({ user }: { user: GitHubUserQuery['user'] }) => {
   const repositoriesCount = user?.repositories.totalCount
@@ -21,6 +22,13 @@ export const Stats = ({ user }: { user: GitHubUserQuery['user'] }) => {
   const prCount = user?.contributionsCollection.totalPullRequestContributions
   const followingCount = user?.following.totalCount
   const followersCount = user?.followers.totalCount
+
+  // Calculate the total number of stars in the array user?.repositories?.nodes
+  // using user?.repositories?.nodes?.stargazers?.totalCount
+  const starsCount = user?.repositories?.nodes?.reduce(
+    (total, node) => total + (node?.stargazers.totalCount || 0),
+    0
+  )
 
   return (
     <div className="p-4 my-8 mx-8 bg-orange-800 full-width-escape prose-invert">
@@ -44,6 +52,7 @@ export const Stats = ({ user }: { user: GitHubUserQuery['user'] }) => {
           <PRCount count={prCount} />
           <FollowingCount count={followingCount} />
           <FollowersCount count={followersCount} />
+          <StarsCount count={starsCount} />
         </div>
       </div>
     </div>
