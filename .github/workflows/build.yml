@@ -24,6 +24,8 @@ jobs:
           GRAPHCMS_TOKEN: ${{ secrets.GRAPHCMS_TOKEN }}
           GRAPHCMS_ENDPOINT: ${{ secrets.GRAPHCMS_ENDPOINT }}
           API_GITHUB_TOKEN: ${{ secrets.API_GITHUB_TOKEN }}
+          SERVER_GITHUB_ENDPOINT: ${{ secrets.SERVER_GITHUB_ENDPOINT }}
+          NEXT_PUBLIC_CLIENT_GITHUB_ENDPOINT: ${{ secrets.NEXT_PUBLIC_CLIENT_GITHUB_ENDPOINT }}
       - run: ls .next/ -a
 
       # Send webpack stats and build information to RelativeCI

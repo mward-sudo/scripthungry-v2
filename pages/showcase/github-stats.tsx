@@ -1,46 +1,79 @@
-import { Errors } from './../../components/showcase/github-stats/errors'
-import type { NextPage } from 'next'
-import { useState } from 'react'
+import type { GetStaticProps, NextPage } from 'next'
+import type { ApolloQueryResult } from '@apollo/client'
+
+import { gitHubClient } from '../../lib/apollo-client'
+import { GitHubUserQuery, useGitHubUserLazyQuery } from '../../generated/github'
+import { Stats } from '../../components/showcase/github-stats/stats'
+import { gitHubUserQuery } from '../../graphql/github'
+
 import Layout from '../../components/Layout'
 import PageTitle from '../../components/PageTitle'
-import { LoadNewUser } from '../../components/showcase/github-stats/load-new-user'
-import { Stats } from '../../components/showcase/github-stats/stats'
 
-import { getUser } from '../../lib/github'
-
-import {
-  GithubApiResponse,
-  isGithubApiErrors,
-  isGithubUser,
-} from '../../lib/github-types'
+// Tracks the first render of the page
+let firstRender = true
 
 type Props = {
-  response: GithubApiResponse
+  response: ApolloQueryResult<GitHubUserQuery>
 }
-
 const GitHubStatsPage: NextPage<Props> = ({ response }) => {
-  const [responseState, setResponseState] = useState(response)
+  // Hook to get the user's GitHub profile data when requested through getUser
+  let [getUser, { error, data }] = useGitHubUserLazyQuery({
+    variables: { username: 'mward-sudo' },
+    client: gitHubClient,
+  })
+
+  // If this is the first page render, use the response parameter
+  if (firstRender) {
+    data = response.data
+    error = response.error
+    // Indicate that the first render has been completed
+    firstRender = false
+  }
+
+  const reloadData = () => {
+    const elem = document.getElementById('username') as HTMLInputElement
+    const username = elem?.value
+    getUser({ variables: { username } })
+  }
 
   return (
     <Layout>
       <PageTitle>GitHub User Stats</PageTitle>
-      {isGithubUser(responseState.user) && <Stats user={responseState.user} />}
-      {isGithubApiErrors(responseState) && (
-        <Errors errors={responseState.errors} />
+      {data?.user && <Stats user={data?.user} />}
+      {error && (
+        <div className="p-8 px-4 my-8 text-3xl font-bold text-center text-red-800 bg-red-100">
+          Error: {error.message}
+        </div>
       )}
-      <LoadNewUser
-        setResponseState={setResponseState}
-        responseState={responseState}
-      />
+      <div className="my-8 text-2xl text-center">
+        <input
+          className="p-2 mr-4 text-gray-800 rounded border-2 border-black"
+          id="username"
+          type="text"
+          placeholder={data?.user?.login}
+        />
+        <button
+          className="p-2 px-4 rounded-lg cursor-pointer bg-primary"
+          onClick={reloadData}
+          id="load-button"
+        >
+          Load GitHub user stats
+        </button>
+      </div>
     </Layout>
   )
 }
 
-export const getStaticProps = async () => {
-  const response = await getUser('mward-sudo')
+export const getStaticProps: GetStaticProps = async () => {
+  const response = await gitHubClient.query<GitHubUserQuery>({
+    query: gitHubUserQuery,
+    variables: { username: 'mward-sudo' },
+  })
 
   return {
-    props: { response },
+    props: {
+      response,
+    },
     revalidate: 60,
   }
 }

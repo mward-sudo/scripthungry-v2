@@ -1,0 +1,25 @@
+overwrite: true
+schema: "http://localhost:3000/api/github/graphql"
+documents: "graphql/*.ts"
+
+generates:
+  generated/github.ts:
+
+    config:
+      reactApolloVersion: 3
+      withHooks: true
+      useTypeImports: true
+      withRefetchFn: true
+      addDocBlocks: true
+      exportFragmentSpreadSubTypes: true
+      skipTypename: true
+    plugins:
+      - add:
+          content: "// THIS IS A GENERATED FILE, use 'pnpm codegen' to regenerate"
+      - add:
+          content: "/* eslint-disable */"
+      - add:
+          content: "// @ts-nocheck"
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
