@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently --kill-others \"next dev\" \"graphql-codegen --config codegen.yml -w\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -39,6 +39,7 @@
     "@types/react": "17.0.39",
     "@types/three": "^0.138.0",
     "autoprefixer": "^10.4.2",
+    "concurrently": "^7.1.0",
     "daisyui": "^2.6.3",
     "eslint": "8.10.0",
     "eslint-config-next": "12.1.0",
