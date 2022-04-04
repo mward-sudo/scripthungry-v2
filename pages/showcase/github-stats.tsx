@@ -32,7 +32,19 @@ const userLoadingState: GitHubUserQuery['user'] = {
   },
   followers: { totalCount: 0 },
   following: { totalCount: 0 },
-  repositories: { totalCount: 0 },
+  repositories: {
+    totalCount: 0,
+    nodes: [
+      {
+        name: 'Loading...',
+        description: '',
+        url: '#',
+        stargazers: { totalCount: 0 },
+        watchers: { totalCount: 0 },
+        forks: { totalCount: 0 },
+      },
+    ],
+  },
 }
 
 type Props = {
@@ -40,10 +52,11 @@ type Props = {
 }
 const GitHubStatsPage: NextPage<Props> = ({ response }) => {
   // Hook to get the user's GitHub profile data when requested through getUser
-  let [getUser, { error, data, loading }] = useGitHubUserLazyQuery({
-    variables: { username: 'mward-sudo' },
-    client: gitHubClient,
-  })
+  let [getUser, { error, data, loading, previousData }] =
+    useGitHubUserLazyQuery({
+      variables: { username: 'mward-sudo' },
+      client: gitHubClient,
+    })
 
   // If this is the first page render, use the response parameter
   if (firstRender) {
@@ -62,11 +75,11 @@ const GitHubStatsPage: NextPage<Props> = ({ response }) => {
   return (
     <Layout>
       <PageTitle>GitHub User Stats</PageTitle>
+      <LoadNewUser login={data?.user?.login} reloadData={reloadData} />
       {(data || loading) && !error && (
         <Stats user={data?.user || userLoadingState} />
       )}
-      {error && <Error error={error.message} />}
-      <LoadNewUser login={data?.user?.login} reloadData={reloadData} />
+      {error && <Error error={error.name} />}
     </Layout>
   )
 }
