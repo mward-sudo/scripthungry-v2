@@ -11,3 +11,7 @@ export const parsePageNumber = (page: string | string[]): number =>
  **/
 export const parseSlug = (slug: string | string[]): string =>
   typeof slug === 'string' ? slug : slug[0]
+
+// Return true if every element of array is not null
+export const allNotNull = <T>(array: T[]): boolean =>
+  array.every((element) => element !== null)
