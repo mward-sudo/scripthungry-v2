@@ -1,14 +1,13 @@
 /** @type {import('next').NextConfig} */
 
 const { StatsWriterPlugin } = require('webpack-stats-plugin')
-const withPreact = require('next-plugin-preact')
 
-module.exports = withPreact({
+module.exports = {
   reactStrictMode: true,
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [320, 400, 640, 750, 828, 1080, 1200, 1400, 1920, 2048, 3840],
-    domains: ['media.graphcms.com', 'avatars.githubusercontent.com'],
+    domains: ['media.graphassets.com', 'avatars.githubusercontent.com'],
   },
   webpack: (config, {}) => {
     config.module.rules.push({
@@ -31,4 +30,4 @@ module.exports = withPreact({
 
     return config
   },
-})
+}

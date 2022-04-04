@@ -16,14 +16,12 @@ const PostImage: PostImage = ({ slug, coverImage }) => {
   return coverImage ? (
     <div className="mt-4">
       <OptionalLink href={href}>
-        <a>
-          <Image
-            src={coverImage.url}
-            height={coverImage.height}
-            width={coverImage.width}
-            alt=""
-          />
-        </a>
+        <Image
+          src={coverImage.url}
+          height={coverImage.height}
+          width={coverImage.width}
+          alt=""
+        />
       </OptionalLink>
     </div>
   ) : (

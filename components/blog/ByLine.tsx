@@ -11,12 +11,12 @@ const avatarSize = 40
 
 const ByLine: ByLine = ({ author }) =>
   author ? (
-    <p className="flex gap-x-4 justify-end items-center mt-8 text-right opacity-75 gap font-display">
+    <div className="flex gap-x-4 justify-end items-center mt-8 text-right opacity-75 gap font-display">
       {author.picture && <Avatar avatar={author.picture} />}
       <div>
         <span className="sr-only">By</span> {author.name}
       </div>
-    </p>
+    </div>
   ) : (
     <></>
   )

@@ -11,9 +11,6 @@ import { gitHubUserQuery } from '../../graphql/github'
 import Layout from '../../components/Layout'
 import PageTitle from '../../components/PageTitle'
 
-// Tracks the first render of the page
-let firstRender = true
-
 const userLoadingState: GitHubUserQuery['user'] = {
   login: 'Loading...',
   name: '',
@@ -58,18 +55,14 @@ const GitHubStatsPage: NextPage<Props> = ({ response }) => {
       client: gitHubClient,
     })
 
-  // If this is the first page render, use the response parameter
-  if (firstRender) {
-    data = response.data
-    error = response.error
-    // Indicate that the first render has been completed
-    firstRender = false
-  }
-
   const reloadData = () => {
     const elem = document.getElementById('username') as HTMLInputElement
     const username = elem?.value
     getUser({ variables: { username } })
+  }
+
+  if (!loading && !data) {
+    data = response.data
   }
 
   return (

@@ -33,7 +33,7 @@ const category: NextPage<categoryProps> = ({
     categories,
     intro: category?.description?.html,
     title: category?.name,
-    paginationPathBase: `/blog/category/${category?.slug}/`,
+    paginationPathBase: `/blog/category/${category?.slug}`,
   })
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
