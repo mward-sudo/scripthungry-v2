@@ -16,13 +16,13 @@ const Pagination: Pagination = ({ pageNo, totalPages, path }) => {
     <div className="btn-group">
       {paginationLinks.map((paginationLink) =>
         paginationLink.disabled ? (
-          <button className={`btn btn-disabled`} key={paginationLink.pageNo}>
+          <button className={`btn btn-disabled`} key={paginationLink.text}>
             {paginationLink.text}
           </button>
         ) : (
           <button
             className={`btn ${paginationLink.currentPage ? 'btn-active' : ''}`}
-            key={paginationLink.pageNo}
+            key={paginationLink.text}
           >
             <Link href={paginationLink.href}>
               <a>{paginationLink.text}</a>

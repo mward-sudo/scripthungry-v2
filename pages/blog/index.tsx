@@ -35,7 +35,7 @@ const index: index = ({
   totalPages,
   categories,
   intro,
-  paginationPathBase = '/blog/',
+  paginationPathBase = '/blog',
 }) => (
   <Layout>
     <PageTitle>{title}</PageTitle>
