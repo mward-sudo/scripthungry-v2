@@ -9285,7 +9285,7 @@ export type IndexPostsQueryVariables = Exact<{
 }>;
 
 
-export type IndexPostsQuery = { posts: Array<{ excerpt?: string | null, slug: string, title: string, author?: { name: string, twitterHandle?: string | null, picture?: { url: string, height?: number | null, width?: number | null } | null } | null, content: { html: string }, coverImage?: { url: string, height?: number | null, width?: number | null } | null }>, postsConnection: { aggregate: { count: number } } };
+export type IndexPostsQuery = { posts: Array<{ excerpt?: string | null, slug: string, title: string, author?: { name: string, twitterHandle?: string | null, picture?: { url: string, height?: number | null, width?: number | null } | null } | null, coverImage?: { url: string, height?: number | null, width?: number | null } | null }>, postsConnection: { aggregate: { count: number } } };
 
 export type PostsCountQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -9341,9 +9341,6 @@ export const IndexPostsDocument = gql`
     excerpt
     slug
     title
-    content {
-      html
-    }
     coverImage {
       url
       height

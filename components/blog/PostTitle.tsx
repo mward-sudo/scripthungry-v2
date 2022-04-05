@@ -1,11 +1,12 @@
-import type { ReactElement } from 'react'
-
 import OptionalLink from '../OptionalLink'
 
-interface PostTitle {
-  (props: { slug?: string | undefined; title: string }): ReactElement<any, any>
-}
-const PostTitle: PostTitle = ({ slug, title }) => {
+export const PostTitle = ({
+  slug,
+  title,
+}: {
+  slug?: string
+  title?: string
+}) => {
   let href: string | undefined
   if (slug) href = `/blog/post/${slug}`
   return (
@@ -14,5 +15,3 @@ const PostTitle: PostTitle = ({ slug, title }) => {
     </h2>
   )
 }
-
-export default PostTitle

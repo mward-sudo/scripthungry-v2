@@ -1,25 +1,25 @@
 import type { NextPage, GetStaticPaths, GetStaticProps } from 'next'
 import type {
-  iBlogCategories,
-  iBlogCategoryWithPostExceprts,
-} from '../../../../models/blog'
+  CategoriesQuery,
+  PostExcerptsByCategoryQuery,
+  PostsCountQuery,
+} from '../../../../generated/graphcms'
 
 import SiteSettings from '../../../../lib/settings'
+import { graphCmsClient } from '../../../../lib/apollo-client'
 import {
-  calculateTotalIndexPages,
-  getTotalBlogCategoryPosts,
-} from '../../../../models/blog'
+  graphCmsBlogCategoriesQuery,
+  graphCmsCategoryPostsCountQuery,
+  graphCmsPostExcerptsByCategoryQuery,
+} from '../../../../graphql/graphcms'
+import { calculateTotalIndexPages } from '../../../../lib/utilities'
 import { parseSlug } from '../../../../lib/utilities'
-import {
-  getBlogCategories,
-  getBlogCategoryWithPostExcerpts,
-} from '../../../../models/blog'
 import index from '../../index'
 
 type categoryProps = {
-  category: iBlogCategoryWithPostExceprts
+  category?: PostExcerptsByCategoryQuery['blogCategory']
   totalPages: number
-  categories: iBlogCategories
+  categories: CategoriesQuery['blogCategories']
 }
 const category: NextPage<categoryProps> = ({
   category,
@@ -36,32 +36,53 @@ const category: NextPage<categoryProps> = ({
     paginationPathBase: `/blog/category/${category?.slug}`,
   })
 
+const client = graphCmsClient
+
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+  // get the slug from the url
   const slug = params?.slug ? parseSlug(params.slug) : ''
+  // get the number of posts per page for pagination
   const postsPerPage = SiteSettings.POSTS_PER_PAGE
-  const totalPostsData = await getTotalBlogCategoryPosts(slug)
-  const totalPosts = totalPostsData?.data?.postsConnection?.aggregate?.count
 
-  const totalPages = calculateTotalIndexPages(totalPosts)
-  const categoriesData = await getBlogCategories()
+  const categoryPostsCountResponse = await client.query<PostsCountQuery>({
+    query: graphCmsCategoryPostsCountQuery,
+    variables: { slug },
+  })
 
-  const categoryPosts = await getBlogCategoryWithPostExcerpts(
-    slug,
-    postsPerPage
+  const totalPages = calculateTotalIndexPages(
+    categoryPostsCountResponse.data.postsConnection.aggregate.count
   )
+
+  const categoriesResponse = await client.query<CategoriesQuery>({
+    query: graphCmsBlogCategoriesQuery,
+  })
+
+  const categoryPostExcerptsResponse =
+    await client.query<PostExcerptsByCategoryQuery>({
+      query: graphCmsPostExcerptsByCategoryQuery,
+      variables: {
+        slug,
+        postsPerPage,
+        skip: 0,
+      },
+    })
 
   return {
     props: {
-      category: categoryPosts?.data?.blogCategory,
+      category: categoryPostExcerptsResponse.data.blogCategory,
       totalPages,
-      categories: categoriesData?.data?.blogCategories,
+      categories: categoriesResponse.data.blogCategories,
     },
   }
 }
 
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
-  const categories = await getBlogCategories()
-  const slugs = categories.data.blogCategories.map((category) => category.slug)
+  const categoriesResponse = await client.query<CategoriesQuery>({
+    query: graphCmsBlogCategoriesQuery,
+  })
+  const slugs = categoriesResponse.data.blogCategories.map(
+    (category) => category.slug
+  )
 
   return {
     paths: slugs.map((slug) => ({

@@ -22,9 +22,6 @@ export const graphCmsIndexPostsQuery = gql`
       excerpt
       slug
       title
-      content {
-        html
-      }
       coverImage {
         url
         height
@@ -57,7 +54,7 @@ export const graphCmsSlugsQuery = gql`
   }
 `
 
-export const grapgCmsPostBySlugQuery = gql`
+export const graphCmsPostBySlugQuery = gql`
   query PostBySlug($slug: String!) {
     post(where: { slug: $slug }, stage: PUBLISHED) {
       author {

@@ -1,23 +1,24 @@
-import type { ReactElement } from 'react'
-import type { iPostExcerpt } from '../../models/blog'
+import { PostTitle } from './PostTitle'
+import { PostImage } from './PostImage'
+import { ByLine } from './ByLine'
+import type { IndexPostsQuery } from '../../generated/graphcms'
 
-import PostTitle from './PostTitle'
-import PostImage from './PostImage'
-import ByLine from './ByLine'
-
-interface PostExcerpt {
-  (props: { post: iPostExcerpt }): ReactElement<any, any>
+type PostExcerpt = {
+  post: IndexPostsQuery['posts'][0]
 }
 
-const PostExcerpt: PostExcerpt = ({
+export const PostExcerpt = ({
   post: { slug, title, excerpt, author, coverImage },
-}) => (
+}: PostExcerpt) => (
   <article className="my-16">
     <PostTitle slug={slug} title={title} />
-    <PostImage slug={slug} coverImage={coverImage} />
+    <PostImage
+      slug={slug}
+      imageUrl={coverImage?.url}
+      imageHeight={coverImage?.height}
+      imageWidth={coverImage?.width}
+    />
     <p className="mt-4 text-base md:text-xl">{excerpt}</p>
-    <ByLine author={author} />
+    <ByLine imageUrl={author?.picture?.url} name={author?.name} />
   </article>
 )
-
-export default PostExcerpt

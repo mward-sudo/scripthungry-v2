@@ -1,15 +1,14 @@
-import type { ReactElement } from 'react'
-
 import Link from 'next/link'
 
-interface Pagination {
-  (props: { pageNo: number; totalPages: number; path: string }): ReactElement<
-    any,
-    any
-  >
-}
-
-const Pagination: Pagination = ({ pageNo, totalPages, path }) => {
+export const Pagination = ({
+  pageNo,
+  totalPages,
+  path,
+}: {
+  pageNo: number
+  totalPages: number
+  path: string
+}) => {
   const paginationLinks = generatePageLinksArray(pageNo, totalPages, path)
 
   return (
@@ -91,5 +90,3 @@ const nextLink = (
     disabled: nextPageNo > totalPages,
   }
 }
-
-export default Pagination

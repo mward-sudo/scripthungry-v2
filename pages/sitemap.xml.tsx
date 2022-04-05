@@ -1,6 +1,11 @@
 import type { GetServerSideProps } from 'next'
+import type { CategoriesQuery, SlugsQuery } from '../generated/graphcms'
+import {
+  graphCmsBlogCategoriesQuery,
+  graphCmsSlugsQuery,
+} from '../graphql/graphcms'
 
-import { getAllPostSlugs, getBlogCategories } from '../models/blog'
+import { graphCmsClient } from '../lib/apollo-client'
 
 const Sitemap: VoidFunction = () => <></>
 
@@ -10,17 +15,26 @@ const baseUrl = {
   production: 'https://scripthungry.com',
 }[process.env.NODE_ENV]
 
+const client = graphCmsClient
+
 const getBlogPages = async (): Promise<string[]> => {
-  const blogSlugs = await getAllPostSlugs()
-  return blogSlugs.data.posts.map(
+  // Get all post slugs
+  const slugsResponse = await client.query<SlugsQuery>({
+    query: graphCmsSlugsQuery,
+  })
+
+  return slugsResponse.data.posts.map(
     (blogSlug) => `${baseUrl}/blog/post/${blogSlug.slug}`
   )
 }
 
 const getBlogCategoryPages = async (): Promise<string[]> => {
-  const categories = await getBlogCategories()
+  // Get all blog categories
+  const categoriesResponse = await client.query<CategoriesQuery>({
+    query: graphCmsBlogCategoriesQuery,
+  })
 
-  return categories?.data.blogCategories.map(
+  return categoriesResponse.data.blogCategories.map(
     (category) => `${baseUrl}/blog/category/${category.slug}`
   )
 }

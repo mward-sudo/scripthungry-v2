@@ -1,32 +1,25 @@
-import type { ReactElement } from 'react'
-import type { iPicture } from '../../models/blog'
-
 import Image from 'next/image'
 import OptionalLink from '../OptionalLink'
 
-interface PostImage {
-  (props: {
-    slug?: string | undefined
-    coverImage: iPicture | undefined
-  }): ReactElement<any, any>
+type props = {
+  slug?: string
+  imageUrl?: string | null
+  imageHeight?: number | null
+  imageWidth?: number | null
 }
 
-const PostImage: PostImage = ({ slug, coverImage }) => {
+export const PostImage = ({
+  slug,
+  imageUrl,
+  imageHeight,
+  imageWidth,
+}: props) => {
   const href = slug ? `/blog/post/${slug}` : undefined
-  return coverImage ? (
+  return imageUrl && imageHeight && imageWidth ? (
     <div className="mt-4">
       <OptionalLink href={href}>
-        <Image
-          src={coverImage.url}
-          height={coverImage.height}
-          width={coverImage.width}
-          alt=""
-        />
+        <Image src={imageUrl} height={imageHeight} width={imageWidth} alt="" />
       </OptionalLink>
     </div>
-  ) : (
-    <></>
-  )
+  ) : null
 }
-
-export default PostImage

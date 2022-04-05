@@ -1,22 +1,28 @@
 import type { GetStaticProps } from 'next'
-import type { iPostExcerpt } from '../../models/blog'
+import type {
+  CategoriesQuery,
+  IndexPostsQuery,
+  PostsCountQuery,
+} from '../../generated/graphcms'
 
 import SiteSettings from '../../lib/settings'
 import Layout from '../../components/Layout'
 import PageTitle from '../../components/PageTitle'
-import PostExcerpt from '../../components/blog/PostExcerpt'
-import Pagination from '../../components/blog/Pagination'
-import { getTotalPostsNumber } from '../../models/blog'
-import { calculateTotalIndexPages, getIndexPosts } from '../../models/blog'
+import { PostExcerpt } from '../../components/blog/PostExcerpt'
+import { Pagination } from '../../components/blog/Pagination'
+import { calculateTotalIndexPages } from '../../lib/utilities'
 import { CategoryCloud } from '../../components/blog/CategoryCloud'
-import Intro from '../../components/blog/SanitizedHtml'
+import { SanitizedHtml as Intro } from '../../components/blog/SanitizedHtml'
 import { graphCmsClient } from '../../lib/apollo-client'
-import { graphCmsBlogCategoriesQuery } from '../../graphql/graphcms'
-import type { CategoriesQuery } from '../../generated/graphcms'
+import {
+  graphCmsBlogCategoriesQuery,
+  graphCmsIndexPostsQuery,
+  graphCmsPostsTotalCountQuery,
+} from '../../graphql/graphcms'
 
 type props = {
   title?: string
-  indexPosts: iPostExcerpt[]
+  indexPosts?: IndexPostsQuery['posts']
   pageNo: number
   totalPages: number
   categories: CategoriesQuery['blogCategories']
@@ -56,18 +62,36 @@ const index = ({
  * Gets blog post excerpts for static site generation
  */
 export const getStaticProps: GetStaticProps = async () => {
+  // The number of posts per page for pagination
+  const postsPerPage = SiteSettings.POSTS_PER_PAGE
+
+  // Query GraphCMS for the blog categories
   const categoriesResponse = await graphCmsClient.query<CategoriesQuery>({
     query: graphCmsBlogCategoriesQuery,
   })
 
-  const postsPerPage = SiteSettings.POSTS_PER_PAGE
-  const indexPosts = await getIndexPosts(1, postsPerPage)
-  const totalPosts = await getTotalPostsNumber()
-  const totalPages = calculateTotalIndexPages(totalPosts)
+  // Query GraphCMS for the index posts
+  const indexPostsResponse = await graphCmsClient.query<IndexPostsQuery>({
+    query: graphCmsIndexPostsQuery,
+    variables: {
+      postsPerPage: postsPerPage,
+      skip: 0,
+    },
+  })
+
+  // Query GraphCMS for the total number of posts
+  const totalPostsResponse = await graphCmsClient.query<PostsCountQuery>({
+    query: graphCmsPostsTotalCountQuery,
+  })
+
+  // Calculate the total number of pages for pagination
+  const totalPages = calculateTotalIndexPages(
+    totalPostsResponse.data.postsConnection.aggregate.count
+  )
 
   return {
     props: {
-      indexPosts: indexPosts?.data?.posts,
+      indexPosts: indexPostsResponse.data.posts,
       pageNo: 1,
       totalPages,
       categories: categoriesResponse.data.blogCategories,
