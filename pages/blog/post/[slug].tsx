@@ -1,18 +1,16 @@
-import type { ReactElement } from 'react'
 import type { GetStaticPaths, GetStaticProps } from 'next'
-import type { iPostData, iPost, iPostSlugs } from '../../../models/blog'
+import type { PostBySlugQuery, SlugsQuery } from '../../../generated/graphcms'
 
+import { graphCmsClient } from '../../../lib/apollo-client'
+import {
+  graphCmsPostBySlugQuery,
+  graphCmsSlugsQuery,
+} from '../../../graphql/graphcms'
 import Head from 'next/head'
 import Layout from '../../../components/Layout'
-import { getAllPostSlugs } from '../../../models/blog'
-import { getPostBySlug } from '../../../models/blog'
-import Post from '../../../components/blog/Post'
+import { Post } from '../../../components/blog/Post'
 
-interface PostPage {
-  (props: { post: iPost }): ReactElement<any, any>
-}
-
-const PostPage: PostPage = ({ post }) => (
+const PostPage = ({ post }: { post: PostBySlugQuery['post'] }) => (
   <Layout>
     <Head>
       <title></title>
@@ -21,12 +19,16 @@ const PostPage: PostPage = ({ post }) => (
   </Layout>
 )
 
+const client = graphCmsClient
+
 export const getStaticPaths: GetStaticPaths = async () => {
-  const postSlugs: iPostSlugs | null = await getAllPostSlugs()
-  const paths: string[] =
-    postSlugs !== null
-      ? postSlugs?.data?.posts?.map((post) => `/blog/post/${post.slug}`)
-      : ['']
+  const slugsResponse = await client.query<SlugsQuery>({
+    query: graphCmsSlugsQuery,
+  })
+
+  const paths: string[] = slugsResponse.data.posts.map(
+    (post) => `/blog/post/${post.slug}`
+  )
 
   return {
     paths,
@@ -35,12 +37,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+  // Refactor
   const slug = params?.slug ? parseSlug(params.slug) : ''
-  const postData: iPostData = await getPostBySlug(slug)
+
+  const postReposne = await client.query<PostBySlugQuery>({
+    query: graphCmsPostBySlugQuery,
+    variables: { slug },
+  })
 
   return {
     props: {
-      post: postData?.data?.post,
+      post: postReposne.data.post,
       slug,
     },
     revalidate: 60,

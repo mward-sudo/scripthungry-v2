@@ -12931,7 +12931,10 @@ export type ProjectNext = Closable & Node & Updatable & {
   resourcePath: Scalars['URI'];
   /** The project's short description. */
   shortDescription?: Maybe<Scalars['String']>;
-  /** The project's name. */
+  /**
+   * The project's name. Falls back to "Untitled table" if blank.
+   *
+   */
   title?: Maybe<Scalars['String']>;
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['DateTime'];

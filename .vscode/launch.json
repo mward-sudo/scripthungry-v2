@@ -8,6 +8,12 @@
       "command": "npm run dev"
     },
     {
+      "name": "Next.js: build",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run build"
+    },
+    {
       "name": "Next.js: debug client-side",
       "type": "pwa-chrome",
       "request": "launch",

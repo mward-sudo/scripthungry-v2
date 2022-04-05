@@ -1,10 +1,33 @@
 overwrite: true
-schema: "http://localhost:3000/api/github/graphql"
-documents: "graphql/*.ts"
 
 generates:
-  generated/github.ts:
+  generated/github.tsx:
 
+    schema: "http://localhost:3000/api/github/graphql"
+    documents: "graphql/github.ts"
+    config:
+      reactApolloVersion: 3
+      withHooks: true
+      useTypeImports: true
+      withRefetchFn: true
+      addDocBlocks: true
+      exportFragmentSpreadSubTypes: true
+      skipTypename: true
+    plugins:
+      - add:
+          content: "// THIS IS A GENERATED FILE, use 'pnpm codegen' to regenerate"
+      - add:
+          content: "/* eslint-disable */"
+      - add:
+          content: "// @ts-nocheck"
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+
+  generated/graphcms.tsx:
+
+    schema: "http://localhost:3000/api/graphcms/graphql"
+    documents: "graphql/graphcms.ts"
     config:
       reactApolloVersion: 3
       withHooks: true

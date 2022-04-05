@@ -1,15 +1,13 @@
-import type { ReactElement } from 'react'
-import type { iBlogCategories } from '../../models/blog'
-
 import Link from 'next/link'
+import type { CategoriesQuery } from '../../generated/graphcms'
 
-interface CategoryCloud {
-  (props: { categories: iBlogCategories }): ReactElement<any, any>
-}
-
-const CategoryCloud: CategoryCloud = ({ categories }) => (
+export const CategoryCloud = ({
+  categories,
+}: {
+  categories: CategoriesQuery['blogCategories']
+}) => (
   <div className="flex flex-wrap gap-2 justify-center pt-4 text-sm">
-    {categories?.map((category) => (
+    {categories.map((category) => (
       <Link href={categoryLink(category.slug)} key={category.slug}>
         <a className="btn btn-sm btn-ghost">{category.name}</a>
       </Link>
@@ -18,5 +16,3 @@ const CategoryCloud: CategoryCloud = ({ categories }) => (
 )
 
 const categoryLink = (slug: string) => `/blog/category/${slug}`
-
-export default CategoryCloud

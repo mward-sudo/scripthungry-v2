@@ -1,34 +1,36 @@
-import type { ReactElement } from 'react'
 import type { GetStaticProps } from 'next'
-import type { iBlogCategories, iPostExcerpt } from '../../models/blog'
+import type {
+  CategoriesQuery,
+  IndexPostsQuery,
+  PostsCountQuery,
+} from '../../generated/graphcms'
 
 import SiteSettings from '../../lib/settings'
 import Layout from '../../components/Layout'
 import PageTitle from '../../components/PageTitle'
-import PostExcerpt from '../../components/blog/PostExcerpt'
-import Pagination from '../../components/blog/Pagination'
-import { getTotalPostsNumber } from '../../models/blog'
+import { PostExcerpt } from '../../components/blog/PostExcerpt'
+import { Pagination } from '../../components/blog/Pagination'
+import { calculateTotalIndexPages } from '../../lib/utilities'
+import { CategoryCloud } from '../../components/blog/CategoryCloud'
+import { SanitizedHtml as Intro } from '../../components/blog/SanitizedHtml'
+import { graphCmsClient } from '../../lib/apollo-client'
 import {
-  calculateTotalIndexPages,
-  getIndexPosts,
-  getBlogCategories,
-} from '../../models/blog'
-import CategoryCloud from '../../components/blog/CategoryCloud'
-import Intro from '../../components/blog/SanitizedHtml'
+  graphCmsBlogCategoriesQuery,
+  graphCmsIndexPostsQuery,
+  graphCmsPostsTotalCountQuery,
+} from '../../graphql/graphcms'
 
-interface index {
-  (props: {
-    title?: string
-    indexPosts: iPostExcerpt[]
-    pageNo: number
-    totalPages: number
-    categories: iBlogCategories
-    intro?: string
-    paginationPathBase?: string
-  }): ReactElement<any, any>
+type props = {
+  title?: string
+  indexPosts?: IndexPostsQuery['posts']
+  pageNo: number
+  totalPages: number
+  categories: CategoriesQuery['blogCategories']
+  intro?: string
+  paginationPathBase?: string
 }
 
-const index: index = ({
+const index = ({
   title = 'Blog',
   indexPosts,
   pageNo,
@@ -36,7 +38,7 @@ const index: index = ({
   categories,
   intro,
   paginationPathBase = '/blog',
-}) => (
+}: props) => (
   <Layout>
     <PageTitle>{title}</PageTitle>
     <div className="grid grid-cols-1 gap-x-4 md:grid-cols-4">
@@ -60,28 +62,49 @@ const index: index = ({
  * Gets blog post excerpts for static site generation
  */
 export const getStaticProps: GetStaticProps = async () => {
+  // The number of posts per page for pagination
   const postsPerPage = SiteSettings.POSTS_PER_PAGE
-  const indexPosts = await getIndexPosts(1, postsPerPage)
-  const totalPosts = await getTotalPostsNumber()
-  const totalPages = calculateTotalIndexPages(totalPosts)
-  const categoriesData = await getBlogCategories()
+
+  // Query GraphCMS for the blog categories
+  const categoriesResponse = await graphCmsClient.query<CategoriesQuery>({
+    query: graphCmsBlogCategoriesQuery,
+  })
+
+  // Query GraphCMS for the index posts
+  const indexPostsResponse = await graphCmsClient.query<IndexPostsQuery>({
+    query: graphCmsIndexPostsQuery,
+    variables: {
+      postsPerPage: postsPerPage,
+      skip: 0,
+    },
+  })
+
+  // Query GraphCMS for the total number of posts
+  const totalPostsResponse = await graphCmsClient.query<PostsCountQuery>({
+    query: graphCmsPostsTotalCountQuery,
+  })
+
+  // Calculate the total number of pages for pagination
+  const totalPages = calculateTotalIndexPages(
+    totalPostsResponse.data.postsConnection.aggregate.count
+  )
 
   return {
     props: {
-      indexPosts: indexPosts?.data?.posts,
+      indexPosts: indexPostsResponse.data.posts,
       pageNo: 1,
       totalPages,
-      categories: categoriesData?.data?.blogCategories,
+      categories: categoriesResponse.data.blogCategories,
     },
     revalidate: 60,
   }
 }
 
-interface Categories {
-  (props: { categories: iBlogCategories }): ReactElement<any, any>
-}
-
-const Categories: Categories = ({ categories }) => (
+const Categories = ({
+  categories,
+}: {
+  categories: CategoriesQuery['blogCategories']
+}) => (
   <div className="hidden text-center md:block md:col-span-1">
     <h2 className="text-xl font-bold">Categories</h2>
     <CategoryCloud categories={categories} />

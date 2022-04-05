@@ -1,18 +1,26 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import type { iBlogCategories, iPostExcerpt } from '../../models/blog'
+import type {
+  CategoriesQuery,
+  IndexPostsQuery,
+  PostsCountQuery,
+} from '../../generated/graphcms'
 
-import { getTotalPostsNumber } from '../../models/blog'
-import { getIndexPosts, getBlogCategories } from '../../models/blog'
-import { calculateTotalIndexPages } from '../../models/blog'
-import { parsePageNumber } from '../../lib/utilities'
 import SiteSettings from '../../lib/settings'
 import index from './index'
+import { calculateTotalIndexPages } from '../../lib/utilities'
+import { parsePageNumber, range } from '../../lib/utilities'
+import { graphCmsClient } from '../../lib/apollo-client'
+import {
+  graphCmsBlogCategoriesQuery,
+  graphCmsIndexPostsQuery,
+  graphCmsPostsTotalCountQuery,
+} from '../../graphql/graphcms'
 
 type indexProps = {
-  indexPosts: iPostExcerpt[]
+  indexPosts: IndexPostsQuery['posts']
   pageNo: number
   totalPages: number
-  categories: iBlogCategories
+  categories: CategoriesQuery['blogCategories']
 }
 
 /** Uses index.tsx to render. DRY */
@@ -23,11 +31,20 @@ const indexPagination: NextPage<indexProps> = ({
   categories,
 }) => index({ indexPosts, pageNo, totalPages, categories })
 
+const client = graphCmsClient
+
 /** Paths for static site generation */
 export const getStaticPaths: GetStaticPaths = async () => {
-  const totalPosts = await getTotalPostsNumber()
-  const totalPages = calculateTotalIndexPages(totalPosts)
-  const paths = generatePathsObject(totalPages)
+  const postsCount = await client.query<PostsCountQuery>({
+    query: graphCmsPostsTotalCountQuery,
+  })
+
+  const totalPages = calculateTotalIndexPages(
+    postsCount.data.postsConnection.aggregate.count
+  )
+  const paths = range(2, totalPages).map((pageNo) => ({
+    params: { page: pageNo.toString() },
+  }))
 
   return {
     paths,
@@ -42,35 +59,36 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   // Using optional chaining, defaults to 2 if params or params.page is undefined
   const pageNo = params?.page ? parsePageNumber(params.page) : 2
   const postsPerPage = SiteSettings.POSTS_PER_PAGE
-  const totalPosts = await getTotalPostsNumber()
-  const totalPages = calculateTotalIndexPages(totalPosts)
-  const indexPosts = await getIndexPosts(pageNo, postsPerPage)
-  const categoriesData = await getBlogCategories()
+
+  // get the total number of posts
+  const postsCountResponse = await client.query<PostsCountQuery>({
+    query: graphCmsPostsTotalCountQuery,
+  })
+
+  const totalPages = calculateTotalIndexPages(
+    postsCountResponse.data.postsConnection.aggregate.count
+  )
+
+  // get the posts for this page
+  const indexPostsResponse = await client.query<IndexPostsQuery>({
+    query: graphCmsIndexPostsQuery,
+    variables: { postsPerPage, skip: (pageNo - 1) * postsPerPage },
+  })
+
+  // get all categories
+  const categoriesResponse = await client.query<CategoriesQuery>({
+    query: graphCmsBlogCategoriesQuery,
+  })
 
   return {
     props: {
-      indexPosts: indexPosts.data.posts,
+      indexPosts: indexPostsResponse.data.posts,
       pageNo,
       totalPages,
-      categories: categoriesData.data.blogCategories,
+      categories: categoriesResponse.data.blogCategories,
     },
     revalidate: 60,
   }
-}
-
-/**
- * Generates paths for index pages from 2 through to totalPages
- * Each array element returned contains a params.page property with page number
- * as a string
- */
-const generatePathsObject = (
-  totalPages: number
-): { params: { page: string } }[] => {
-  let paths = []
-  for (let page = 2; page <= totalPages; page++) {
-    paths.push({ params: { page: `${page}` } })
-  }
-  return paths
 }
 
 export default indexPagination
