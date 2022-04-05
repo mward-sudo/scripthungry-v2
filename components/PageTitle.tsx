@@ -5,7 +5,7 @@ interface PageTitle {
 }
 
 const PageTitle: PageTitle = ({ children }) => (
-  <h1 className="text-5xl font-bold font-display">{children}</h1>
+  <h1 className="text-4xl font-bold sm:text-5xl font-display">{children}</h1>
 )
 
 export default PageTitle

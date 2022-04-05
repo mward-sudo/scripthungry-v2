@@ -5,11 +5,13 @@ import type { ApolloQueryResult } from '@apollo/client'
 
 import { gitHubClient } from '../../lib/apollo-client'
 import { GitHubUserQuery, useGitHubUserLazyQuery } from '../../generated/github'
-import { Stats } from '../../components/showcase/github-stats/stats'
+import { UserCard } from '../../components/showcase/github-stats/user-card'
 import { gitHubUserQuery } from '../../graphql/github'
 
 import Layout from '../../components/Layout'
 import PageTitle from '../../components/PageTitle'
+import type { FormEventHandler } from 'react'
+import Head from 'next/head'
 
 const userLoadingState: GitHubUserQuery['user'] = {
   login: 'Loading...',
@@ -55,7 +57,8 @@ const GitHubStatsPage: NextPage<Props> = ({ response }) => {
       client: gitHubClient,
     })
 
-  const reloadData = () => {
+  const reloadData: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault()
     const elem = document.getElementById('username') as HTMLInputElement
     const username = elem?.value
     getUser({ variables: { username } })
@@ -67,12 +70,19 @@ const GitHubStatsPage: NextPage<Props> = ({ response }) => {
 
   return (
     <Layout>
-      <PageTitle>GitHub User Stats</PageTitle>
-      <LoadNewUser login={data?.user?.login} reloadData={reloadData} />
+      <Head>
+        <title>GitHub Profile</title>
+      </Head>
+      <div className="flex flex-col justify-between lg:flex-row">
+        <div className="text-center lg:text-left">
+          <PageTitle>GitHub Profile</PageTitle>
+        </div>
+        <LoadNewUser login={data?.user?.login} reloadData={reloadData} />
+      </div>
+      {error && <Error error={error.message} />}
       {(data || loading) && !error && (
-        <Stats user={data?.user || userLoadingState} />
+        <UserCard user={data?.user || userLoadingState} />
       )}
-      {error && <Error error={error.name} />}
     </Layout>
   )
 }

@@ -16,14 +16,16 @@ export const Repositories = ({
   stargazers,
 }: params) => (
   <Link href={url || ''}>
-    <a className="block p-4 my-4 bg-slate-500">
-      <div className="flex flex-auto gap-4 justify-between w-full text-lg">
-        <span className="text-xl font-bold">{name}</span>
-        <span>
+    <a className="block p-4 my-4 bg-stone-100 dark:bg-stone-800 hover:outline-2 hover:outline-dotted hover:outline-stone-500">
+      <div className="flex flex-auto gap-4 justify-between items-center w-full text-lg">
+        <div>
+          <div className="text-xl font-bold">{name}</div>
+          <div className="text-italic">{description}</div>
+        </div>
+        <div className="min-w-fit">
           <span className="mr-2">⭐</span> {stargazers?.totalCount}
-        </span>
+        </div>
       </div>
-      <span className="text-italic">{description}</span>
     </a>
   </Link>
 )
