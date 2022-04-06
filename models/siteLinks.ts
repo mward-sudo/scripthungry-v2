@@ -6,7 +6,7 @@ export type Links = {
 const links: Links = [
   { link: '/showcase', text: 'Showcase' },
   { link: '/blog', text: 'Blog' },
-  { link: 'https://github.com/mward-sudo/scripthungry-v2', text: 'GitHub' },
+  { link: '/showcase/github-stats', text: 'GitHub' },
   {
     link: 'https://www.linkedin.com/in/michael-ward-ba003622/',
     text: 'LinkedIn',
