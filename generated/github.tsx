@@ -19355,6 +19355,8 @@ export type StartRepositoryMigrationInput = {
   ownerId: Scalars['ID'];
   /** The name of the imported repository. */
   repositoryName: Scalars['String'];
+  /** Whether to skip migrating releases for the repository. */
+  skipReleases?: InputMaybe<Scalars['Boolean']>;
   /** The ID of the Octoshift migration source. */
   sourceId: Scalars['ID'];
   /** The Octoshift migration source repository URL. */
