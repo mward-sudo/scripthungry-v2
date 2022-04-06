@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ImStarFull } from 'react-icons/im'
 
 type params = {
   name?: string
@@ -23,7 +24,10 @@ export const Repositories = ({
           <div className="text-italic">{description}</div>
         </div>
         <div className="min-w-fit">
-          <span className="mr-2">⭐</span> {stargazers?.totalCount}
+          <ImStarFull className="inline-block mr-2 text-yellow-500 align-middle" />
+          <span className="inline-block align-middle">
+            {stargazers?.totalCount}
+          </span>
         </div>
       </div>
     </a>
