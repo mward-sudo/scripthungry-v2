@@ -12,13 +12,18 @@ export const UserCard = ({ user }: { user: GitHubUserQuery['user'] }) => {
   const prCount = user?.contributionsCollection.totalPullRequestContributions
   const followingCount = user?.following.totalCount
   const followersCount = user?.followers.totalCount
-  const repositories = user?.repositories.nodes
-    ?.slice()
-    .sort((a, b) =>
-      a !== null && b !== null
-        ? b.stargazers.totalCount - a.stargazers.totalCount
-        : 1
-    )
+  const repositories = user?.repositories.nodes?.slice().sort((a, b) => {
+    // Sort by stars descending first, then by name descending
+    if (a !== null && b !== null) {
+      if (a?.stargazers.totalCount > b?.stargazers.totalCount) return -1
+      if (a?.stargazers.totalCount < b?.stargazers.totalCount) return 1
+
+      if (a?.name > b?.name) return 1
+      if (a?.name < b?.name) return -1
+    }
+    // If both are null, they are equal
+    return 0
+  })
 
   // Calculate the total number of stars in the array user?.repositories?.nodes
   // using user?.repositories?.nodes?.stargazers?.totalCount
