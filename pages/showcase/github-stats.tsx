@@ -13,39 +13,6 @@ import PageTitle from '../../components/PageTitle'
 import { FormEventHandler, useEffect, useState } from 'react'
 import Head from 'next/head'
 
-const userLoadingState: GitHubUserQuery['user'] = {
-  login: 'Loading...',
-  name: '',
-  bio: '',
-  avatarUrl: '/img/avatar.png',
-  url: '',
-  contributionsCollection: {
-    totalCommitContributions: 0,
-    totalIssueContributions: 0,
-    totalPullRequestContributions: 0,
-    contributionCalendar: {
-      totalContributions: 0,
-      weeks: [],
-    },
-    contributionYears: [],
-  },
-  followers: { totalCount: 0 },
-  following: { totalCount: 0 },
-  repositories: {
-    totalCount: 0,
-    nodes: [
-      {
-        name: 'Loading...',
-        description: '',
-        url: '#',
-        stargazers: { totalCount: 0 },
-        watchers: { totalCount: 0 },
-        forks: { totalCount: 0 },
-      },
-    ],
-  },
-}
-
 type Props = {
   response: ApolloQueryResult<GitHubUserQuery>
 }
