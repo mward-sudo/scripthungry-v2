@@ -10,7 +10,7 @@ import { gitHubUserQuery } from '../../graphql/github'
 
 import Layout from '../../components/Layout'
 import PageTitle from '../../components/PageTitle'
-import type { FormEventHandler } from 'react'
+import { FormEventHandler, useEffect, useState } from 'react'
 import Head from 'next/head'
 
 const userLoadingState: GitHubUserQuery['user'] = {
@@ -51,21 +51,29 @@ type Props = {
 }
 const GitHubStatsPage: NextPage<Props> = ({ response }) => {
   // Hook to get the user's GitHub profile data when requested through getUser
-  let [getUser, { error, data, loading, previousData }] =
+  const [getUser, { error, data, loading, previousData }] =
     useGitHubUserLazyQuery({
       variables: { username: 'mward-sudo' },
       client: gitHubClient,
     })
+
+  // userData state is set either
+  const [userData, setUserData] = useState<GitHubUserQuery['user']>(
+    response.data.user
+  )
+
+  // setUserData if data changes
+  useEffect(() => {
+    if (data) {
+      setUserData(data.user)
+    }
+  }, [data])
 
   const reloadData: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
     const elem = document.getElementById('username') as HTMLInputElement
     const username = elem?.value
     getUser({ variables: { username } })
-  }
-
-  if (!loading && !data) {
-    data = response.data
   }
 
   return (
@@ -77,12 +85,10 @@ const GitHubStatsPage: NextPage<Props> = ({ response }) => {
         <div className="text-center lg:text-left">
           <PageTitle>GitHub Profile</PageTitle>
         </div>
-        <LoadNewUser login={data?.user?.login} reloadData={reloadData} />
+        <LoadNewUser login={userData?.login} reloadData={reloadData} />
       </div>
       {error && <Error error={error.message} />}
-      {(data || loading) && !error && (
-        <UserCard user={data?.user || userLoadingState} />
-      )}
+      {userData && !error && <UserCard user={userData} />}
     </Layout>
   )
 }
