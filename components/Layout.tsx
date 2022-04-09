@@ -16,7 +16,7 @@ const Layout: Layout = ({ children }) => {
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
       <div className="flex flex-col drawer-content">
         <NavBar links={siteLinks} />
-        <div className="container flex-1 px-3 pt-12 mx-auto">{children}</div>
+        <div className="container flex-1 px-3 pt-16 mx-auto">{children}</div>
         <Footer />
       </div>
       <MobileDrawer links={siteLinks} />

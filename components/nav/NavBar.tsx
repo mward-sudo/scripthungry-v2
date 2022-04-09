@@ -8,9 +8,9 @@ type NavBar = {
 }
 
 const NavBar: NavBar = ({ links }) => (
-  <div className="sticky top-0 z-50 w-full bg-primary">
-    <div className="bg-transparent fixedw-full navbar">
-      <div className="flex-1 px-2 mx-2">
+  <div className="sticky top-0 z-50 w-full bg-transparent backdrop-blur-sm">
+    <div className="w-full bg-transparent navbar">
+      <div className="flex-1 px-2 mr-2">
         <SiteTitle />
       </div>
       <div className="flex-none lg:hidden">
@@ -31,7 +31,7 @@ const NavBar: NavBar = ({ links }) => (
         </label>
       </div>
       <div className="hidden flex-none lg:block">
-        <ul className="menu menu-horizontal">
+        <ul className="menu menu-horizontal bg-base-200 rounded-box">
           {links.map(({ link, text }) => (
             <li key={link}>
               <Link href={link}>

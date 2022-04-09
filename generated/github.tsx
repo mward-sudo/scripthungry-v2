@@ -20628,6 +20628,8 @@ export type TreeEntry = {
   extension?: Maybe<Scalars['String']>;
   /** Whether or not this tree entry is generated */
   isGenerated: Scalars['Boolean'];
+  /** Number of lines in the file. */
+  lineCount?: Maybe<Scalars['Int']>;
   /** Entry file mode. */
   mode: Scalars['Int'];
   /** Entry file name. */

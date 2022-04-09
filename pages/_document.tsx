@@ -23,7 +23,7 @@ class MyDocument extends Document {
           ></link>
           <meta name="theme-color" content="#641AE6"></meta>
         </Head>
-        <body className="min-h-full text-gray-800 bg-white dark:text-gray-200 dark:bg-stone-900">
+        <body className="min-h-full text-base-content bg-base-100">
           <Main />
           <NextScript />
         </body>

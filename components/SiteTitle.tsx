@@ -7,7 +7,7 @@ interface SiteTitle {
 }
 
 const SiteTitle: SiteTitle = () => (
-  <h1 className="text-2xl font-display">
+  <h1 className="p-2 px-4 text-2xl rounded-box bg-base-200 font-display">
     <Link href="/">
       <a>scriptHungry</a>
     </Link>
