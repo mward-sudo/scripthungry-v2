@@ -64,7 +64,9 @@ const GitHubStatsPage: NextPage<Props> = ({ response }) => {
 
   // setUserData if data changes
   useEffect(() => {
-    if (data) {
+    // Only set userData if data.user is not null. Allows the current userData to be
+    // used if the user is not found or we are using data from props.
+    if (data && data.user !== null) {
       setUserData(data.user)
     }
   }, [data])
@@ -88,7 +90,7 @@ const GitHubStatsPage: NextPage<Props> = ({ response }) => {
         <LoadNewUser login={userData?.login} reloadData={reloadData} />
       </div>
       {error && <Error error={error.message} />}
-      {userData && !error && <UserCard user={userData} />}
+      {userData && <UserCard user={userData} />}
     </Layout>
   )
 }
